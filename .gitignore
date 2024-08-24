@@ -39,9 +39,6 @@ Thumbs.db
 *.local.php
 /config.php
 
-# Ignore PHPStorm files
-/.idea/
-
 # Ignore other sensitive files
 config/database.php
 
