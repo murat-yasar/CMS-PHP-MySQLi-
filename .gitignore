@@ -1,0 +1,64 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE and editor files
+.vscode/
+
+# Ignore Composer dependencies
+/vendor/
+
+# Ignore environment files
+.env
+.env.local
+.env.*.local
+.env.php
+
+# Ignore log files
+/logs/
+*.log
+
+# Ignore cache and temporary files
+/tmp/
+/cache/
+*.cache
+
+# Ignore session files
+/sessions/
+
+# Ignore upload files
+/uploads/
+
+# Ignore database backup files
+*.sql
+*.sqlite
+*.db
+
+# Ignore user-specific files
+*.env
+*.local.php
+/config.php
+
+# Ignore PHPStorm files
+/.idea/
+
+# Ignore other sensitive files
+config/database.php
+
+# Ignore compiled PHP files (if using OpCache or similar)
+*.php.opcache
+*.php.save
+
+# Ignore Node.js dependencies (if using npm/yarn for frontend)
+node_modules/
+
+# Ignore SASS cache files
+.sass-cache/
+
+# Ignore build files
+/public/build/
+dist/
+
+# Ignore other common CMS directories
+/assets/
+content/
