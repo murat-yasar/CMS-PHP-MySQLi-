@@ -20,13 +20,13 @@
 
 
 
-        
         </div>
         <!-- /.container-fluid -->
 
-          <!-- Footer -->
-          <?php include "includes/admin_footer.php"; ?>
-        </div>
+        <!-- Footer -->
+        <?php include "includes/admin_footer.php"; ?>
+          
+      </div>
       <!-- /.content-wrapper -->
     </div>
     <!-- /#wrapper -->
