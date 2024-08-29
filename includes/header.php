@@ -29,7 +29,7 @@
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="css/style.css">
 
-	<title>MY CMS (PHP - MySQLi)</title>
+	<title>MY/Blog (PHP - MySQLi)</title>
 </head>
 
 <body>

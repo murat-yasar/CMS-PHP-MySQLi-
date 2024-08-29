@@ -24,13 +24,6 @@
             }
          ?>
 
-         <!-- 
-         <a href="#">Web Design<span>(7)</span></a>
-         <a href="#">Marketing<span>(142)</span></a>
-         <a href="#">Web Development<span>(74)</span></a>
-         <a href="#">Branding<span>(60)</span></a>
-         <a href="#">Photography<span>(5)</span></a>
-          -->
       </div>
    </div>
    <!-- /Category -->
