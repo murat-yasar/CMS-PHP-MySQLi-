@@ -20,7 +20,6 @@
         <div class="container-fluid">
 
           <h1>Welcome to Admin Page</h1>
-
           <hr>
 
           <table class="table table bordered">
@@ -28,70 +27,92 @@
               <tr>
                 <th>ID</th>
                 <th>Category Name</th>
-                <th>Add - Edit - Delete</th>
+                <th>Add/Edit/Delete</th>
               </tr>
             </thead>
 
             <tbody>
 
-            <?php
-              $sql_query = "SELECT * FROM categories";
-              $categories = mysqli_query($conn, $sql_query);
+              <?php
+                if(isset($_POST["add_category"])){
+                  $category_name = $_POST["category_name"];
+                  if ($category_name == null || empty($category_name)){
+                    echo "<div class='alert alert-danger' role='alert'>Please, type a category name!</div>";
+                  } else {
+                    $sql_query = "INSERT INTO categories(category_name) VALUE('$category_name') ";
+                    $add_category = mysqli_query($conn, $sql_query);
+                    echo "<div class='alert alert-success' role='alert'>The new category has been successfully added!</div>";
+                  }
+                }
+              ?>
 
-              while ($category = mysqli_fetch_assoc($categories)){
-                $category_id = $category['category_id'];
-                $category_name = $category['category_name'];
+              <?php
+                if(isset($_POST["edit_category"])){
+                  $edit_cat_title = $_POST["category_name_edit"];
+                  $sql_query_edit = "UPDATE categories SET category_name = '$edit_cat_title' WHERE category_id = '$_POST[category_id]'";
+                  $edit_category_query = mysqli_query($conn, $sql_query_edit);
+                  header("Location: categories.php");
+                }
+              ?>
 
-                echo "
-                <tr>
-                  <td>{$category_id}</td>
-                  <td>{$category_name}</td>
-                  <td>
-                    <div class='dropdown'>
-                      <button id='dropdownMenuButton' class='btn btn-primary dropdown-toggle' type='button' data-toggle='dropdown' aria-expanded='false' aria-haspopup='true'>
-                        Actions
+              <?php
+                $sql_query = "SELECT * FROM categories ORDER BY category_id DESC";
+                $categories = mysqli_query($conn, $sql_query);
+
+                $model_num = 1;
+
+                while ($category = mysqli_fetch_assoc($categories)){
+                  $category_id = $category['category_id'];
+                  $category_name = $category['category_name'];
+
+                  echo "<tr>
+                          <td>{$category_id}</td>
+                          <td>{$category_name}</td>
+                          <td>
+                            <div class='dropdown'>
+                              <button id='dropdownMenuButton' class='btn btn-primary dropdown-toggle' type='button' data-toggle='dropdown' aria-expanded='false' aria-haspopup='true'>
+                                Actions
+                              </button>
+                              <div class='dropdown-menu'>
+                                <a class='dropdown-item' href='#' data-toggle='modal' data-target='#add_modal'>Add</a>
+                                <div class='dropdown-divider'></div>
+                                <a class='dropdown-item' href='#' data-toggle='modal' data-target='#edit_modal$model_num'>Edit</a>
+                                <div class='dropdown-divider'></div>
+                                <a class='dropdown-item' href='categories.php?delete={$category_id}'>Delete</a>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>";
+              ?>
+
+              <div id="edit_modal<?php echo $model_num; ?>" class="modal fade">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
+                      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                       </button>
-                      <div class='dropdown-menu'>
-                        <a class='dropdown-item' href='#' data-toggle='modal' data-target='#add_modal'>Add</a>
-                        <div class='dropdown-divider'></div>
-                        <a class='dropdown-item' href='#' data-toggle='modal' data-target='#edit_modal'>Edit</a>
-                        <div class='dropdown-divider'></div>
-                        <a class='dropdown-item' href='#'>Delete</a>
-                      </div>
                     </div>
-                  </td>
-                </tr>
-                ";
-              }
+                    <div class="modal-body">
+                      <form action="" method="post">
+                        <div class="form-group">
+                          <input type="text" class="form-control" name="category_name_edit" value="<?php if(isset($category_name)) echo $category_name; ?>">
+                        </div>
+                        <div class="form-group">
+                          <input type="hidden" name="category_id" value="<?php echo $category['category_id']; ?>">
+                          <input type="submit" class="btn btn-primary" name="edit_category" value="Edit Category">
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-            ?>
+              <?php $model_num++; } ?>
 
             </tbody>
           </table>
-
-          <div id="edit_modal" class="modal fade">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
-                  <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form action="" method="post">
-                    <div class="form-group">
-                      <input type="text" class="form-control" name="category_name" value="">
-                    </div>
-                    <div class="form-group">
-                      <input type="hidden" value="" name="category_id">
-                      <input type="submit" class="btn btn-primary" name="edit_category" value="Edit Category">
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
 
           <div id="add_modal" class="modal fade">
             <div class="modal-dialog" role="document">
@@ -115,6 +136,16 @@
               </div>
             </div>
           </div>
+
+          <?php
+            if(isset($_GET["delete"])){
+              $del_category_id = $_GET["delete"];
+              $sql_query = "DELETE FROM categories WHERE category_id = {$del_category_id} ";
+              $del_category = mysqli_query($conn, $sql_query);
+              header("location: categories.php");
+            }
+            echo "<div class='alert alert-success' role='alert'>The new category has been successfully deleted!</div>";
+          ?>
 
         </div> <!-- /.container-fluid -->
 
