@@ -1,3 +1,6 @@
+<?php include "includes/db.php"; ?>
+
+<!-- Header -->
 <?php include "includes/header.php"; ?>
 
 <!-- Navigation -->
@@ -25,90 +28,34 @@
 				</div>
 			</div>
         <div class="row">
-            <div class="col-md-4 col-sm-6 portfolio-item">
-                <a href="img/01-full.jpg" class="portfolio-link" data-lightbox="web-design" data-title="Item 1" >
+            <?php
+                $sql_query = "SELECT * FROM portfolios";
+                $portfolios = mysqli_query($conn, $sql_query);
+
+                while($portfolio = mysqli_fetch_assoc($portfolios)){
+                    $portfolioId = $portfolio['portfolio_id'];
+                    $portfolioName = $portfolio['portfolio_name'];
+                    $portfolioCategory = $portfolio['portfolio_category'];
+                    $portfolioImgSm = $portfolio['portfolio_img_sm'];
+                    $portfolioImgBg = $portfolio['portfolio_img_bg'];
+            ?>
+
+            <div class='col-md-4 col-sm-6 portfolio-item'>
+                <a href="img/<?php echo $portfolioImgSm; ?>" class="portfolio-link" data-lightbox="<?php echo $portfolioCategory; ?>" data-title="<?php echo $portfolioName; ?>" >
                     <div class="portfolio-hover">
                         <div class="portfolio-hover-content">
                             <i class="fas fa-search fa-3x"></i>
                         </div>
                     </div>
-                    <img class="img-fluid" src="img/01-thumbnail.jpg" alt="">
+                    <img class="img-fluid" src="img/<?php echo $portfolioImgBg; ?>" alt="">
                 </a>
                 <div class="portfolio-caption">
-                    <h4>ITEM 1</h4>
-                    <p class="text-muted">Web Design</p>
+                    <h4><?php echo $portfolioName; ?></h4>
+                    <p class="text-muted"><?php echo $portfolioCategory; ?></p>
                 </div>
             </div>
-            <div class="col-md-4 col-sm-6 portfolio-item">
-                <a href="img/02-full.jpg" class="portfolio-link" data-lightbox="graphic-design" data-title="Item 2" >
-                    <div class="portfolio-hover">
-                        <div class="portfolio-hover-content">
-                            <i class="fas fa-search fa-3x"></i>
-                        </div>
-                    </div>
-                    <img class="img-fluid" src="img/02-thumbnail.jpg" alt="">
-                </a>
-                <div class="portfolio-caption">
-                    <h4>ITEM 2</h4>
-                    <p class="text-muted">Graphic Design</p>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6 portfolio-item">
-                <a href="img/03-full.jpg" class="portfolio-link" data-lightbox="web-design" data-title="Item 3" >
-                    <div class="portfolio-hover">
-                        <div class="portfolio-hover-content">
-                            <i class="fas fa-search fa-3x"></i>
-                        </div>
-                    </div>
-                    <img class="img-fluid" src="img/03-thumbnail.jpg" alt="">
-                </a>
-                <div class="portfolio-caption">
-                    <h4>ITEM 3</h4>
-                    <p class="text-muted">Web Design</p>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6 portfolio-item">
-                <a href="img/04-full.jpg" class="portfolio-link" data-lightbox="web-design" data-title="Item 4" >
-                    <div class="portfolio-hover">
-                        <div class="portfolio-hover-content">
-                            <i class="fas fa-search fa-3x"></i>
-                        </div>
-                    </div>
-                    <img class="img-fluid" src="img/04-thumbnail.jpg" alt="">
-                </a>
-                <div class="portfolio-caption">
-                    <h4>ITEM 4</h4>
-                    <p class="text-muted">Web Design</p>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6 portfolio-item">
-                <a href="img/05-full.jpg" class="portfolio-link" data-lightbox="graphic-design" data-title="Item 5" >
-                    <div class="portfolio-hover">
-                        <div class="portfolio-hover-content">
-                            <i class="fas fa-search fa-3x"></i>
-                        </div>
-                    </div>
-                    <img class="img-fluid" src="img/05-thumbnail.jpg" alt="">
-                </a>
-                <div class="portfolio-caption">
-                    <h4>ITEM 5</h4>
-                    <p class="text-muted">Graphic Design</p>
-                </div>
-            </div>
-            <div class="col-md-4 col-sm-6 portfolio-item">
-                <a href="img/06-full.jpg" class="portfolio-link" data-lightbox="graphic-design" data-title="Item 6" >
-                    <div class="portfolio-hover">
-                        <div class="portfolio-hover-content">
-                            <i class="fas fa-search fa-3x"></i>
-                        </div>
-                    </div>
-                    <img class="img-fluid" src="img/06-thumbnail.jpg" alt="">
-                </a>
-                <div class="portfolio-caption">
-                    <h4>ITEM 6</h4>
-                    <p class="text-muted">Graphic Design</p>
-                </div>
-            </div>
+
+            <?php } ?>
         </div>
     </div>
 </section>
