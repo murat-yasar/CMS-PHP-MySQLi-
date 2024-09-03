@@ -11,6 +11,11 @@
       <i class="fas fa-list-ul"></i>
       <span>Categories</span></a>
    </li>
+   <li class="nav-item">
+      <a class="nav-link" href="portfolios.php">
+      <i class="fas fa-file-image"></i>
+      <span>Portfolios</span></a>
+   </li>
    <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <i class="fas fa-fw fa-folder"></i>

@@ -40,14 +40,14 @@
                     $portfolioImgBg = $portfolio['portfolio_img_bg'];
             ?>
 
-            <div class='col-md-4 col-sm-6 portfolio-item'>
+            <div class="col-md-4 col-sm-6 portfolio-item">
                 <a href="img/<?php echo $portfolioImgSm; ?>" class="portfolio-link" data-lightbox="<?php echo $portfolioCategory; ?>" data-title="<?php echo $portfolioName; ?>" >
                     <div class="portfolio-hover">
                         <div class="portfolio-hover-content">
                             <i class="fas fa-search fa-3x"></i>
                         </div>
                     </div>
-                    <img class="img-fluid" src="img/<?php echo $portfolioImgBg; ?>" alt="">
+                    <img class="img-fluid" height="400" width="300" src="img/<?php echo $portfolioImgBg; ?>" alt="">
                 </a>
                 <div class="portfolio-caption">
                     <h4><?php echo $portfolioName; ?></h4>
