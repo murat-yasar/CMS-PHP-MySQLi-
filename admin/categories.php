@@ -144,7 +144,7 @@
               $del_category = mysqli_query($conn, $sql_query);
               header("location: categories.php");
             }
-            echo "<div class='alert alert-success' role='alert'>The new category has been successfully deleted!</div>";
+            echo "<div class='alert alert-success' role='alert'>The category has been successfully deleted!</div>";
           ?>
 
         </div> <!-- /.container-fluid -->

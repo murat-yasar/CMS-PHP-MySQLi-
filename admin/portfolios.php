@@ -35,6 +35,26 @@
 
                <tbody>
                   <?php
+                     if(isset($_POST['add_portfolio'])){
+                        $portfolio_name = $_POST['portfolio_name'];
+                        $portfolio_category = $_POST['portfolio_category'];
+
+                        $portfolio_img_sm = $_FILES['portfolio_image_sm']['name'];
+                        $portfolio_img_sm_tmp = $_FILES['portfolio_image_sm']['tmp_name'];
+                        move_uploaded_file($portfolio_img_sm_tmp, "../img/$portfolio_img_sm");
+
+                        $portfolio_img_bg = $_FILES['portfolio_image_bg']['name'];
+                        $portfolio_img_bg_tmp = $_FILES['portfolio_image_bg']['tmp_name'];
+                        move_uploaded_file($portfolio_img_bg_tmp, "../img/$portfolio_img_bg");
+
+                        $sql_query = "INSERT INTO portfolios (portfolio_name, portfolio_category, portfolio_img_sm, portfolio_img_bg)
+                                       VALUES ('{$portfolio_name}', '{$portfolio_category}', '{$portfolio_img_sm}', '{$portfolio_img_bg}')";
+
+                        $add_portfolio = mysqli_query($conn, $sql_query);
+                     }
+                  ?>
+
+                  <?php
                      $sql_query = "SELECT * FROM portfolios ORDER BY portfolio_id DESC";
                      $portfolios = mysqli_query($conn, $sql_query);
 
@@ -63,7 +83,7 @@
                                        <div class='dropdown-divider'></div>
                                        <a class='dropdown-item' href='#' data-toggle='modal' data-target='#edit_modal$model_num'>Edit</a>
                                        <div class='dropdown-divider'></div>
-                                       <a class='dropdown-item' href='categories.php?delete={$portfolio_id}'>Delete</a>
+                                       <a class='dropdown-item' href='portfolios.php?delete={$portfolio_id}'>Delete</a>
                                        </div>
                                     </div>
                                  </td>
@@ -99,8 +119,7 @@
                                  </div>
                                  <div class="form-group">
                                     <input type="hidden" name="portfolio_id" value="">
-                                    <input type="submit" class="btn btn-primary" name="edit_portfolio"
-                                       value="Edit Portfolio">
+                                    <input type="submit" class="btn btn-primary" name="edit_portfolio" value="Edit Portfolio">
                                  </div>
                               </form>
                            </div>
@@ -123,7 +142,7 @@
                         </button>
                      </div>
                      <div class="modal-body">
-                        <form action="" method="post">
+                        <form action="" method="post" enctype="multipart/form-data">
                            <div class="form-group">
                               <label for="portfolio_name">Portfolio Name</label>
                               <input type="text" class="form-control" name="portfolio_name">
@@ -148,6 +167,16 @@
                   </div>
                </div>
             </div>
+
+            <?php
+            if(isset($_GET["delete"])){
+              $del_portfolio_id = $_GET["delete"];
+              $sql_query = "DELETE FROM portfolios WHERE portfolio_id = {$del_portfolio_id} ";
+              $del_portfolio = mysqli_query($conn, $sql_query);
+              header("location: portfolios.php");
+            }
+            echo "<div class='alert alert-success' role='alert'>The portfolio has been successfully deleted!</div>";
+          ?>
 
          </div> <!-- /.container-fluid -->
 
