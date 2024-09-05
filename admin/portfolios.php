@@ -149,7 +149,17 @@
                            </div>
                            <div class="form-group">
                               <label for="portfolio_category">Portfolio Category</label>
-                              <input type="text" class="form-control" name="portfolio_category">
+                              <select class="form-control" name="portfolio_category">
+                                 <?php
+                                    $sql_query = "SELECT * FROM categories";
+                                    $categories = mysqli_query($conn, $sql_query);
+
+                                    while($category = mysqli_fetch_assoc($categories)){
+                                       $category_name = $category['category_name'];
+                                       echo "<option value='$category_name'>$category_name</option>";
+                                    }
+                                 ?>
+                              </select>
                            </div>
                            <div class="form-group">
                               <label for="portfolio_image_sm">Small Image</label>
