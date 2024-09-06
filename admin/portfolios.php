@@ -38,25 +38,47 @@
                      if(isset($_POST['add_portfolio'])){
                         $portfolio_name = $_POST['portfolio_name'];
                         $portfolio_category = $_POST['portfolio_category'];
-
                         $portfolio_img_sm = $_FILES['portfolio_image_sm']['name'];
+                        $portfolio_img_bg = $_FILES['portfolio_image_bg']['name'];
+
                         $portfolio_img_sm_tmp = $_FILES['portfolio_image_sm']['tmp_name'];
                         move_uploaded_file($portfolio_img_sm_tmp, "../img/$portfolio_img_sm");
-
-                        $portfolio_img_bg = $_FILES['portfolio_image_bg']['name'];
                         $portfolio_img_bg_tmp = $_FILES['portfolio_image_bg']['tmp_name'];
                         move_uploaded_file($portfolio_img_bg_tmp, "../img/$portfolio_img_bg");
 
                         $sql_query = "INSERT INTO portfolios (portfolio_name, portfolio_category, portfolio_img_sm, portfolio_img_bg)
                                        VALUES ('{$portfolio_name}', '{$portfolio_category}', '{$portfolio_img_sm}', '{$portfolio_img_bg}')";
 
-                        $add_portfolio = mysqli_query($conn, $sql_query);
+                        $edit_portfolio = mysqli_query($conn, $sql_query);
                      }
                   ?>
 
                   <?php
-                     $sql_query = "SELECT * FROM portfolios ORDER BY portfolio_id DESC";
-                     $portfolios = mysqli_query($conn, $sql_query);
+                     if(isset($_POST["edit_portfolio"])){
+                     $portfolio_id = $_POST['portfolio_id'];
+                     $portfolio_name = $_POST['portfolio_name'];
+                     $portfolio_category = $_POST['portfolio_category'];
+                     $portfolio_img_sm = $_FILES['portfolio_image_sm']['name'];
+                     $portfolio_img_bg = $_FILES['portfolio_image_bg']['name'];
+
+                     $portfolio_img_sm_tmp = $_FILES['portfolio_image_sm']['tmp_name'];
+                     move_uploaded_file($portfolio_img_sm_tmp, "../img/$portfolio_img_sm");
+                     $portfolio_img_bg_tmp = $_FILES['portfolio_image_bg']['tmp_name'];
+                     move_uploaded_file($portfolio_img_bg_tmp, "../img/$portfolio_img_bg");
+
+
+                     $edit_query = "UPDATE portfolios SET portfolio_name = '{$portfolio_name}', portfolio_category = '{$portfolio_category}', portfolio_img_sm = '{$portfolio_img_sm}', portfolio_img_bg = '{$portfolio_img_bg}' WHERE portfolio_id = '{$portfolio_id}'";
+
+                     $edit_portfolio = mysqli_query($conn, $edit_query);
+                     header("location: portfolios.php");
+                  }
+                  echo "<div class='alert alert-success' role='alert'>The portfolio has been successfully editted!</div>";
+                  ?>
+
+
+                  <?php
+                     $list_query = "SELECT * FROM portfolios ORDER BY portfolio_id DESC";
+                     $portfolios = mysqli_query($conn, $list_query);
 
                      $model_num = 1;
 
@@ -90,7 +112,7 @@
                               </tr>";
                   ?>
 
-                  <div id="edit_modal" class="modal fade">
+                  <div id="edit_modal<?php echo $model_num; ?>" class="modal fade">
                      <div class="modal-dialog" role="document">
                         <div class="modal-content">
                            <div class="modal-header">
@@ -100,25 +122,37 @@
                               </button>
                            </div>
                            <div class="modal-body">
-                              <form action="" method="post">
+                              <!--  -->
+                           <?php var_dump($_POST); ?> 
+                              <form action="" method="post" enctype="multipart/form-data">
                                  <div class="form-group">
                                     <label for="portfolio_name">Portfolio Name</label>
-                                    <input type="text" class="form-control" name="portfolio_name" value="">
+                                    <input type="text" class="form-control" name="portfolio_name" value="<?php echo $portfolio_name?>">
                                  </div>
                                  <div class="form-group">
                                     <label for="portfolio_category">Portfolio Category</label>
-                                    <input type="text" class="form-control" name="portfolio_category" value="">
+                                    <select class="form-control" name="portfolio_category">
+                                       <?php
+                                          $sql_query = "SELECT * FROM categories";
+                                          $categories = mysqli_query($conn, $sql_query);
+
+                                          while($category = mysqli_fetch_assoc($categories)){
+                                             $category_name = $category['category_name'];
+                                             echo "<option value='$category_name'>$category_name</option>";
+                                          }
+                                       ?>
+                                    </select>
                                  </div>
                                  <div class="form-group">
-                                    <label for="portfolio_image_sm">Small Image</label>
+                                    <img width="100" src="../img/<?php echo $portfolio_img_sm; ?>">
                                     <input type="file" class="form-control" name="portfolio_image_sm" value="">
                                  </div>
                                  <div class="form-group">
-                                    <label for="portfolio_image_bg">Big Image</label>
+                                    <img width="100" src="../img/<?php echo $portfolio_img_sm; ?>">
                                     <input type="file" class="form-control" name="portfolio_image_bg" value="">
                                  </div>
                                  <div class="form-group">
-                                    <input type="hidden" name="portfolio_id" value="">
+                                    <input type="hidden" name="portfolio_id" value="<?php echo $portfolio_id; ?>">
                                     <input type="submit" class="btn btn-primary" name="edit_portfolio" value="Edit Portfolio">
                                  </div>
                               </form>
@@ -127,7 +161,7 @@
                      </div>
                   </div>
 
-                  <?php } ?> <!-- / End of While -->
+                  <?php $model_num++; } ?> <!-- / End of While -->
                   
                </tbody>
             </table>
@@ -151,8 +185,8 @@
                               <label for="portfolio_category">Portfolio Category</label>
                               <select class="form-control" name="portfolio_category">
                                  <?php
-                                    $sql_query = "SELECT * FROM categories";
-                                    $categories = mysqli_query($conn, $sql_query);
+                                    $add_query = "SELECT * FROM categories";
+                                    $categories = mysqli_query($conn, $add_query);
 
                                     while($category = mysqli_fetch_assoc($categories)){
                                        $category_name = $category['category_name'];
