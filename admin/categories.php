@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +23,12 @@
           <h1>Welcome to Admin Page</h1>
           <hr>
 
+          <?php if (isset($_SESSION['message'])): ?>
+              <div class='alert alert-success' role='alert'>
+                <?php echo $_SESSION['message']; unset($_SESSION['message']); ?>
+              </div>
+          <?php endif; ?>
+
           <table class="table table bordered">
             <thead class="thead-dark">
               <tr>
@@ -41,7 +48,10 @@
                   } else {
                     $sql_query = "INSERT INTO categories(category_name) VALUE('$category_name') ";
                     $add_category = mysqli_query($conn, $sql_query);
-                    echo "<div class='alert alert-success' role='alert'>The new category has been successfully added!</div>";
+
+                    $_SESSION['message'] = "The category has been successfully added!";
+                    header("Location: categories.php");
+                    exit();
                   }
                 }
               ?>
@@ -51,7 +61,10 @@
                   $edit_cat_title = $_POST["category_name_edit"];
                   $sql_query_edit = "UPDATE categories SET category_name = '$edit_cat_title' WHERE category_id = '$_POST[category_id]'";
                   $edit_category_query = mysqli_query($conn, $sql_query_edit);
+
+                  $_SESSION['message'] = "The category has been successfully edited!";
                   header("Location: categories.php");
+                  exit();
                 }
               ?>
 
@@ -142,9 +155,11 @@
               $del_category_id = $_GET["delete"];
               $sql_query = "DELETE FROM categories WHERE category_id = {$del_category_id} ";
               $del_category = mysqli_query($conn, $sql_query);
-              header("location: categories.php");
+              
+              $_SESSION['message'] = "The category has been successfully deleted!";
+              header("Location: categories.php");
+              exit();
             }
-            echo "<div class='alert alert-success' role='alert'>The category has been successfully deleted!</div>";
           ?>
 
         </div> <!-- /.container-fluid -->
