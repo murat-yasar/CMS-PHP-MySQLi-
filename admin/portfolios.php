@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,6 +21,12 @@
 
             <h1>Welcome to Admin Page</h1>
             <hr>
+
+            <?php if (isset($_SESSION['message'])): ?>
+               <div class='alert alert-success' role='alert'>
+                  <?php echo $_SESSION['message']; unset($_SESSION['message']); ?>
+               </div>
+            <?php endif; ?>
 
             <table class="table table bordered">
                <thead class="thead-dark">
@@ -50,29 +57,52 @@
                                        VALUES ('{$portfolio_name}', '{$portfolio_category}', '{$portfolio_img_sm}', '{$portfolio_img_bg}')";
 
                         $edit_portfolio = mysqli_query($conn, $sql_query);
+
+                        $_SESSION['message'] = "The portfolio has been successfully added!";
+                        header("Location: portfolios.php");
+                        exit();
                      }
                   ?>
 
                   <?php
                      if(isset($_POST["edit_portfolio"])){
-                     $portfolio_id = $_POST['portfolio_id'];
-                     $portfolio_name = $_POST['portfolio_name'];
-                     $portfolio_category = $_POST['portfolio_category'];
-                     $portfolio_img_sm = $_FILES['portfolio_image_sm']['name'];
-                     $portfolio_img_bg = $_FILES['portfolio_image_bg']['name'];
+                        $portfolio_id = $_POST['portfolio_id'];
+                        $portfolio_name = $_POST['portfolio_name'];
+                        $portfolio_category = $_POST['portfolio_category'];
 
-                     $portfolio_img_sm_tmp = $_FILES['portfolio_image_sm']['tmp_name'];
-                     move_uploaded_file($portfolio_img_sm_tmp, "../img/$portfolio_img_sm");
-                     $portfolio_img_bg_tmp = $_FILES['portfolio_image_bg']['tmp_name'];
-                     move_uploaded_file($portfolio_img_bg_tmp, "../img/$portfolio_img_bg");
+                        $portfolio_img_sm = $_FILES['portfolio_image_sm']['name'];
+                        $portfolio_img_sm_tmp = $_FILES['portfolio_image_sm']['tmp_name'];
+                        $portfolio_img_bg = $_FILES['portfolio_image_bg']['name'];
+                        $portfolio_img_bg_tmp = $_FILES['portfolio_image_bg']['tmp_name'];
 
+                        if(empty($portfolio_img_sm)){ 
+                           $img_sm_query = "SELECT * FROM portfolios WHERE portfolio_id = '$_POST[portfolio_id]'";
+                           $select_img_sm = mysqli_query($conn, $img_sm_query);
+                           while($img = mysqli_fetch_array($select_img_sm)){
+                              $portfolio_img_sm = $img['portfolio_img_sm'];
+                           }
+                        }
+                        
+                        if(empty($portfolio_img_bg)){ 
+                           $img_bg_query = "SELECT * FROM portfolios WHERE portfolio_id = '$_POST[portfolio_id]'";
+                           $select_img_bg = mysqli_query($conn, $img_bg_query);
+                           while($img = mysqli_fetch_array($select_img_bg)){
+                              $portfolio_img_bg = $img['portfolio_img_bg'];
+                           }
+                        }
 
-                     $edit_query = "UPDATE portfolios SET portfolio_name = '{$portfolio_name}', portfolio_category = '{$portfolio_category}', portfolio_img_sm = '{$portfolio_img_sm}', portfolio_img_bg = '{$portfolio_img_bg}' WHERE portfolio_id = '{$portfolio_id}'";
+                        move_uploaded_file($portfolio_img_sm_tmp, "../img/$portfolio_img_sm");
+                        move_uploaded_file($portfolio_img_bg_tmp, "../img/$portfolio_img_bg");
 
-                     $edit_portfolio = mysqli_query($conn, $edit_query);
-                     header("location: portfolios.php");
-                  }
-                  echo "<div class='alert alert-success' role='alert'>The portfolio has been successfully editted!</div>";
+                        $edit_query = "UPDATE portfolios SET portfolio_name = '{$portfolio_name}', portfolio_category = '{$portfolio_category}', portfolio_img_sm = '{$portfolio_img_sm}', portfolio_img_bg = '{$portfolio_img_bg}' WHERE portfolio_id = '{$portfolio_id}'";
+
+                        $edit_portfolio = mysqli_query($conn, $edit_query);
+                        
+                        $_SESSION['message'] = "The portfolio has been successfully edited!";
+                        header("Location: portfolios.php");
+                        exit();
+                     } 
+
                   ?>
 
 
@@ -122,12 +152,10 @@
                               </button>
                            </div>
                            <div class="modal-body">
-                              <!--  -->
-                           <?php var_dump($_POST); ?> 
                               <form action="" method="post" enctype="multipart/form-data">
                                  <div class="form-group">
                                     <label for="portfolio_name">Portfolio Name</label>
-                                    <input type="text" class="form-control" name="portfolio_name" value="<?php echo $portfolio_name?>">
+                                    <input type="text" class="form-control" name="portfolio_name" value="<?php echo $portfolio_name; ?>">
                                  </div>
                                  <div class="form-group">
                                     <label for="portfolio_category">Portfolio Category</label>
@@ -138,7 +166,7 @@
 
                                           while($category = mysqli_fetch_assoc($categories)){
                                              $category_name = $category['category_name'];
-                                             echo "<option value='$category_name'>$category_name</option>";
+                                             echo ($category_name == $portfolio_category) ? "<option value='$category_name' selected>$category_name</option>" : "<option value='$category_name'>$category_name</option>";
                                           }
                                        ?>
                                     </select>
@@ -217,9 +245,11 @@
               $del_portfolio_id = $_GET["delete"];
               $sql_query = "DELETE FROM portfolios WHERE portfolio_id = {$del_portfolio_id} ";
               $del_portfolio = mysqli_query($conn, $sql_query);
-              header("location: portfolios.php");
+              
+              $_SESSION['message'] = "The portfolio has been successfully deleted!";
+              header("Location: portfolios.php");
+              exit();
             }
-            echo "<div class='alert alert-success' role='alert'>The portfolio has been successfully deleted!</div>";
           ?>
 
          </div> <!-- /.container-fluid -->
@@ -234,3 +264,5 @@
    <?php include "includes/admin_scripts.php"; ?>
 </body>
 </html>
+
+<!-- echo "<div class='alert alert-success' role='alert'>The portfolio has been successfully deleted!</div>"; -->
