@@ -46,11 +46,12 @@
                      if(isset($_POST['add_portfolio'])){
                         $portfolio_name = $_POST['portfolio_name'];
                         $portfolio_category = $_POST['portfolio_category'];
-                        $portfolio_img_sm = $_FILES['portfolio_image_sm']['name'];
-                        $portfolio_img_bg = $_FILES['portfolio_image_bg']['name'];
 
+                        $portfolio_img_sm = $_FILES['portfolio_image_sm']['name'];
                         $portfolio_img_sm_tmp = $_FILES['portfolio_image_sm']['tmp_name'];
                         move_uploaded_file($portfolio_img_sm_tmp, "../img/$portfolio_img_sm");
+                        
+                        $portfolio_img_bg = $_FILES['portfolio_image_bg']['name'];
                         $portfolio_img_bg_tmp = $_FILES['portfolio_image_bg']['tmp_name'];
                         move_uploaded_file($portfolio_img_bg_tmp, "../img/$portfolio_img_bg");
 

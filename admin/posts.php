@@ -48,19 +48,31 @@
             <tbody>
 
               <?php
-               //  if(isset($_POST["add_category"])){
-               //    $category_name = $_POST["category_name"];
-               //    if ($category_name == null || empty($category_name)){
-               //      echo "<div class='alert alert-danger' role='alert'>Please, type a category name!</div>";
-               //    } else {
-               //      $sql_query = "INSERT INTO categories(category_name) VALUE('$category_name') ";
-               //      $add_category = mysqli_query($conn, $sql_query);
+                if(isset($_POST["add_post"])){
+                  $post_title = $_POST["post_title"];
+                  $post_category = $_POST["post_category"];
+                  $post_author = $_POST["post_author"];
+                  $post_comment_number = $_POST["post_comment_number"];
+                  $post_text = $_POST["post_text"];
+                  $post_tags = $_POST["post_tags"];
+                  $post_date = date('d-m-y');
 
-               //      $_SESSION['message'] = "The category has been successfully added!";
-               //      header("Location: categories.php");
-               //      exit();
-               //    }
-               //  }
+                  $post_img_url = $_FILES['post_img_url']['name'];
+                  $post_img_url_tmp = $_FILES['post_img_url']['tmp_name'];
+                  move_uploaded_file($post_img_url_tmp, "../img/$post_img_url");
+
+                  if ($post_title == null || empty($post_title)){
+                    echo "<div class='alert alert-danger' role='alert'>Please, type a title for the post!</div>";
+                  } else {
+                    $sql_query = "INSERT INTO posts (post_title, post_category, post_author, post_date, post_comment_number, post_text, post_tags, post_image_url) 
+                                  VALUES ('{$post_title}', '{$post_category}', '{$post_author}', now(), '{$post_comment_number}', '{$post_text}', '{$post_tags}', '{$post_img_url}')";
+                    $add_post = mysqli_query($conn, $sql_query);
+
+                    $_SESSION['message'] = "The post has been successfully added!";
+                    header("Location: posts.php");
+                    exit();
+                  }
+                }
               ?>
 
               <?php
@@ -129,7 +141,7 @@
                       </button>
                     </div>
                     <div class="modal-body">
-                      <form action="" method="post">
+                      <form action="" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                           <input type="text" class="form-control" name="post_title_edit" value="<?php if(isset($post_title)) echo $post_title; ?>">
                         </div>
@@ -158,9 +170,34 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <form action="" method="post">
+                  <form action="" method="post" enctype="multipart/form-data">
                     <div class="form-group">
+                      <label for="post_title">Title</label>                     
                       <input type="text" class="form-control" name="post_title">
+                    </div>
+                    <div class="form-group">
+                      <label for="post_category">Category</label>                     
+                      <input type="text" class="form-control" name="post_category">
+                    </div>
+                    <div class="form-group">
+                      <label for="post_author">Author</label>                     
+                      <input type="text" class="form-control" name="post_author">
+                    </div>
+                    <div class="form-group">
+                      <label for="post_comment_number">Comment Number</label>                     
+                      <input type="text" class="form-control" name="post_comment_number">
+                    </div>
+                    <div class="form-group">
+                      <label for="post_img_url">Image URL</label>                     
+                      <input type="file" class="form-control" name="post_img_url">
+                    </div>
+                    <div class="form-group">
+                      <label for="post_tags">Tags</label>                     
+                      <input type="text" class="form-control" name="post_tags">
+                    </div>
+                    <div class="form-group">
+                      <label for="post_text">Text</label>                     
+                      <textarea type="text" class="form-control" name="post_text" cols="20" rows="5"></textarea>
                     </div>
                     <div class="form-group">
                       <input type="submit" class="btn btn-primary" name="add_post" value="Add Post">
@@ -172,15 +209,15 @@
           </div>
 
           <?php
-            // if(isset($_GET["delete"])){
-            //   $del_category_id = $_GET["delete"];
-            //   $sql_query = "DELETE FROM categories WHERE category_id = {$del_category_id} ";
-            //   $del_category = mysqli_query($conn, $sql_query);
+            if(isset($_GET["delete"])){
+              $del_post_id = $_GET["delete"];
+              $sql_query = "DELETE FROM posts WHERE post_id = {$del_post_id} ";
+              $del_post = mysqli_query($conn, $sql_query);
               
-            //   $_SESSION['message'] = "The category has been successfully deleted!";
-            //   header("Location: categories.php");
-            //   exit();
-            // }
+              $_SESSION['message'] = "The Post has been successfully deleted!";
+              header("Location: posts.php");
+              exit();
+            }
           ?>
 
         </div> <!-- /.container-fluid -->
