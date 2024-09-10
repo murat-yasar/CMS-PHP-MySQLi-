@@ -63,6 +63,12 @@
 
                   if ($post_title == null || empty($post_title)) {
                     echo "<div class='alert alert-danger' role='alert'>Please, type a title for the post!</div>";
+                  } else if ($post_category == null || empty($post_category)) {
+                    echo "<div class='alert alert-danger' role='alert'>Please, type a category for the post!</div>";
+                  } else if ($post_author == null || empty($post_author)) {
+                    echo "<div class='alert alert-danger' role='alert'>Please, type the author name of the post!</div>";
+                  } else if ($post_text == null || empty($post_text)) {
+                    echo "<div class='alert alert-danger' role='alert'>Please, enter the text of the post!</div>";
                   } else {
                       $sql_query = "INSERT INTO posts (post_title, post_category, post_author, post_date, post_comment_number, post_text, post_tags, post_img_url) 
                                     VALUES ('{$post_title}', '{$post_category}', '{$post_author}', now(), '{$post_comment_number}', '{$post_text}', '{$post_tags}', '{$post_img_url}')";
@@ -99,7 +105,7 @@
                   $post_category = $post['post_category'];
                   $post_title = $post['post_title'];
                   $post_author = $post['post_author'];
-                  $post_date = $post['post_date'];
+                  $post_date = date('d-m-Y', strtotime($post['post_date']));
                   $post_comment_number = $post['post_comment_number'];
                   $post_img_url = $post['post_img_url'];
                   $post_text = substr($post['post_text'], 0, 50);
