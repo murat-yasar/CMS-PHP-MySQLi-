@@ -61,17 +61,14 @@
                   $post_img_url_tmp = $_FILES['post_img_url']['tmp_name'];
                   move_uploaded_file($post_img_url_tmp, "../img/$post_img_url");
 
-                  if ($post_title == null || empty($post_title)){
-                    echo "<div class='alert alert-danger' role='alert'>Please, type a title for the post!</div>";
-                  } else {
-                    $sql_query = "INSERT INTO posts (post_title, post_category, post_author, post_date, post_comment_number, post_text, post_tags, post_image_url) 
-                                  VALUES ('{$post_title}', '{$post_category}', '{$post_author}', now(), '{$post_comment_number}', '{$post_text}', '{$post_tags}', '{$post_img_url}')";
-                    $add_post = mysqli_query($conn, $sql_query);
+                  $sql_query = "INSERT INTO posts (post_title, post_category, post_author, post_comment_number, post_text, post_tags, post_img_url, post_date)
+                                       VALUES ('{$post_title}', '{$post_category}', '{$post_author}', '{$post_comment_number}', '{$post_text}', '{$post_tags}', '{$post_img_url}', now())";
 
-                    $_SESSION['message'] = "The post has been successfully added!";
-                    header("Location: posts.php");
-                    exit();
-                  }
+                  $add_post = mysqli_query($conn, $sql_query);
+
+                  $_SESSION['message'] = "The post has been successfully added!";
+                  header("Location: posts.php");
+                  exit();
                 }
               ?>
 
@@ -100,7 +97,7 @@
                   $post_author = $post['post_author'];
                   $post_date = $post['post_date'];
                   $post_comment_number = $post['post_comment_number'];
-                  $post_img_url = $post['post_image_url'];
+                  $post_img_url = $post['post_img_url'];
                   $post_text = substr($post['post_text'], 0, 50);
                   $post_tags = $post['post_tags'];
 
