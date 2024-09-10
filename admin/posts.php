@@ -57,9 +57,9 @@
                   $post_text = mysqli_real_escape_string($conn, $_POST["post_text"]);
                   $post_tags = mysqli_real_escape_string($conn, $_POST["post_tags"]);
 
-                  $post_img_url = $_FILES['post_img_url']['name'];
-                  $post_img_url_tmp = $_FILES['post_img_url']['tmp_name'];
-                  move_uploaded_file($post_img_url_tmp, "../img/$post_img_url");
+                  $post_img = $_FILES['post_img']['name'];
+                  $post_img_tmp = $_FILES['post_img']['tmp_name'];
+                  move_uploaded_file($post_img_tmp, "../img/$post_img");
 
                   if ($post_title == null || empty($post_title)) {
                     echo "<div class='alert alert-danger' role='alert'>Please, type a title for the post!</div>";
@@ -70,8 +70,8 @@
                   } else if ($post_text == null || empty($post_text)) {
                     echo "<div class='alert alert-danger' role='alert'>Please, enter the text of the post!</div>";
                   } else {
-                      $sql_query = "INSERT INTO posts (post_title, post_category, post_author, post_date, post_comment_number, post_text, post_tags, post_img_url) 
-                                    VALUES ('{$post_title}', '{$post_category}', '{$post_author}', now(), '{$post_comment_number}', '{$post_text}', '{$post_tags}', '{$post_img_url}')";
+                      $sql_query = "INSERT INTO posts (post_title, post_category, post_author, post_date, post_comment_number, post_text, post_tags, post_img) 
+                                    VALUES ('{$post_title}', '{$post_category}', '{$post_author}', now(), '{$post_comment_number}', '{$post_text}', '{$post_tags}', '{$post_img}')";
 
                       $add_post = mysqli_query($conn, $sql_query);
               
@@ -83,15 +83,33 @@
               ?>
 
               <?php
-               //  if(isset($_POST["edit_category"])){
-               //    $edit_cat_title = $_POST["category_name_edit"];
-               //    $sql_query_edit = "UPDATE categories SET category_name = '$edit_cat_title' WHERE category_id = '$_POST[category_id]'";
-               //    $edit_category_query = mysqli_query($conn, $sql_query_edit);
+                if(isset($_POST["edit_post"])){
+                  $post_title = $_POST['post_title'];
+                  $post_category = $_POST['post_category'];
+                  $post_author = $_POST['post_author'];
+                  $post_tags = $_POST['post_tags'];
+                  $post_text = $_POST['post_text'];
 
-               //    $_SESSION['message'] = "The category has been successfully edited!";
-               //    header("Location: categories.php");
-               //    exit();
-               //  }
+                  $post_img = $_FILES['post_img']['name'];
+                  $post_img_tmp = $_FILES['post_img']['tmp_name'];
+                  
+                  if(empty($post_img)){ 
+                    $img_query = "SELECT * FROM posts WHERE post_id = '$_POST[post_id]'";
+                    $select_img = mysqli_query($conn, $img_query);
+                    while($img = mysqli_fetch_array($select_img)){
+                      $post_img = $img['post_img'];
+                    }
+                  }
+
+                  move_uploaded_file($post_img_tmp, "../img/$post_img");
+
+                  $edit_query = "UPDATE posts SET post_title = '$post_title', post_category = '$post_category', post_author = '$post_author', post_tags = '$post_tags', post_text = '$post_text', post_img = '$post_img' WHERE post_id = '$_POST[post_id]'";
+                  $edit_post = mysqli_query($conn, $edit_query);
+
+                  $_SESSION['message'] = "The post has been successfully edited!";
+                  header("Location: posts.php");
+                  exit();
+                }
               ?>
 
               <?php
@@ -107,7 +125,7 @@
                   $post_author = $post['post_author'];
                   $post_date = date('d-m-Y', strtotime($post['post_date']));
                   $post_comment_number = $post['post_comment_number'];
-                  $post_img_url = $post['post_img_url'];
+                  $post_img = $post['post_img'];
                   $post_text = substr($post['post_text'], 0, 50);
                   $post_tags = $post['post_tags'];
 
@@ -118,7 +136,7 @@
                           <td>{$post_author}</td>
                           <td>{$post_date}</td>
                           <td>{$post_comment_number}</td>
-                          <td><img src='../img/{$post_img_url}' width='80' height='80' /></td>
+                          <td><img src='../img/{$post_img}' width='80' height='80' /></td>
                           <td>{$post_text}</td>
                           <td>{$post_tags}</td>
                           <td>
@@ -150,7 +168,39 @@
                     <div class="modal-body">
                       <form action="" method="post" enctype="multipart/form-data">
                         <div class="form-group">
-                          <input type="text" class="form-control" name="post_title_edit" value="<?php if(isset($post_title)) echo $post_title; ?>">
+                          <label for="post_title">Title</label>                     
+                          <input type="text" class="form-control" name="post_title" value="<?php echo $post_title; ?>">
+                        </div>
+                        <div class="form-group">
+                          <label for="post_category">Category</label>                     
+                          <select class="form-control" name="post_category">
+                            <?php
+                              $sql_query = "SELECT * FROM categories";
+                              $categories = mysqli_query($conn, $sql_query);
+
+                              while($category = mysqli_fetch_assoc($categories)){
+                                  $category_name = $category['category_name'];
+                                  echo ($category_name == $post_category) ? "<option value='$category_name' selected>$category_name</option>" : "<option value='$category_name'>$category_name</option>";
+                              }
+                            ?>
+                        </select>
+                        </div>
+                        <div class="form-group">
+                          <label for="post_author">Author</label>                     
+                          <input type="text" class="form-control" name="post_author" value="<?php echo $post_author; ?>">
+                        </div>
+                        <div class="form-group">
+                          <label for="post_img">Image URL</label>
+                          <img width="100" src="../img/<?php echo $post_img; ?>">
+                          <input type="file" class="form-control" name="post_img">
+                        </div>
+                        <div class="form-group">
+                          <label for="post_tags">Tags</label>
+                          <input type="text" class="form-control" name="post_tags" value="<?php echo $post_tags; ?>">
+                        </div>
+                        <div class="form-group">
+                          <label for="post_text">Text</label>
+                          <textarea type="text" class="form-control" name="post_text" cols="20" rows="5"><?php echo $post['post_text']; ?></textarea>
                         </div>
                         <div class="form-group">
                           <input type="hidden" name="post_id" value="<?php echo $post['post_id']; ?>">
@@ -184,7 +234,17 @@
                     </div>
                     <div class="form-group">
                       <label for="post_category">Category</label>                     
-                      <input type="text" class="form-control" name="post_category">
+                      <select class="form-control" name="post_category">
+                        <?php
+                          $add_query = "SELECT * FROM categories";
+                          $categories = mysqli_query($conn, $add_query);
+
+                          while($category = mysqli_fetch_assoc($categories)){
+                              $category_name = $category['category_name'];
+                              echo "<option value='$category_name'>$category_name</option>";
+                          }
+                        ?>
+                    </select>
                     </div>
                     <div class="form-group">
                       <label for="post_author">Author</label>                     
@@ -195,8 +255,8 @@
                       <input type="text" class="form-control" name="post_comment_number">
                     </div>
                     <div class="form-group">
-                      <label for="post_img_url">Image URL</label>                     
-                      <input type="file" class="form-control" name="post_img_url">
+                      <label for="post_img">Image URL</label>                     
+                      <input type="file" class="form-control" name="post_img">
                     </div>
                     <div class="form-group">
                       <label for="post_tags">Tags</label>                     
