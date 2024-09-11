@@ -18,9 +18,14 @@
             $sql_query = "SELECT * FROM categories";
             $categories = mysqli_query($conn, $sql_query);
 
-            while($row = mysqli_fetch_assoc($categories)){
-               $category_name = $row["category_name"];
-               echo "<a href='#'>{$category_name}<span>(7)</span></a>";
+            while($category = mysqli_fetch_assoc($categories)){
+               $category_name = $category["category_name"];
+
+               $category_filter_query = "SELECT * FROM posts WHERE post_category = '$category_name'";
+               $category_filtered = mysqli_query($conn, $category_filter_query);
+               $category_number = mysqli_num_rows($category_filtered);
+
+               echo "<a href='category.php?category=$category_name'>{$category_name}<span>($category_number)</span></a>";
             }
          ?>
 
