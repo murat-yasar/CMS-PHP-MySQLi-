@@ -25,11 +25,12 @@
 							$posts = mysqli_query($conn, $sql_query);
 							
 							while($post = mysqli_fetch_assoc($posts)){
+								$post_id = $post["post_id"];
 								$post_title = ucfirst($post["post_title"]);   // ucfirst(); Capitilizes the first letters of each word
 								$post_author = $post["post_author"];
 								$post_date = $post["post_date"];
 								$post_comment_number = $post["post_comment_number"];
-								$post_image_url = $post["post_image_url"];
+								$post_img = $post["post_img"];
 								$post_text = substr($post["post_text"], 0, 100);   // substr($text, i, n); Takes the n number of characters starting from position i
 								$post_tags = $post["post_tags"];
 						?>
@@ -38,7 +39,7 @@
 						<div class="col-md-6">
 							<div class="blog">
 								<div class="blog-img">
-									<img src=<?php echo "img/$post_image_url"; ?> class="img-fluid">
+									<img src=<?php echo "img/$post_img"; ?> class="img-fluid">
 								</div>
 								<div class="blog-content">
 									<ul class="blog-meta">
@@ -48,7 +49,7 @@
 									</ul>
 									<h3><?php echo $post_title; ?></h3>
 									<p><?php echo $post_text; ?></p>
-									<a href="blog-single.php">Read More</a>
+									<a href="blog-single.php?read=<?php echo $post_id; ?>">Read More</a>
 								</div>
 							</div>
 						</div>
