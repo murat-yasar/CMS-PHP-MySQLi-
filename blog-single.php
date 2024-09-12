@@ -64,18 +64,32 @@
 							</div>
 							<!-- /comment -->
 
+							<?php
+								if(isset($_POST['create_comment'])){
+									$comment_author = $_POST['comment_author'];
+									$comment_email = $_POST['comment_email'];
+									$comment_text = $_POST['comment_text'];
+
+									$post_id = $_GET['read'];
+
+									$sql_query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_text, comment_status,  comment_date)
+															VALUES ($post_id, '{$comment_author}', '{$comment_email}', '{$comment_text}', 'unapproved', now())";
+									$comment_query = mysqli_query($conn, $sql_query);
+								}
+							?>
+
 						</div>
 						<!-- /blog comments -->
 
 						<!-- reply form -->
 						<div class="reply-form">
 							<h3>Leave A Comment</h3>
-							<form>
-								<input class="form-control mb-4" type="text" placeholder="Name">
-								<input class="form-control mb-4" type="email" placeholder="Email">
-								<textarea class="form-control mb-4" row="5" placeholder="Add Your Commment"></textarea>
+							<form action="" method="post">
+								<input class="form-control mb-4" type="text" name="comment_author" placeholder="Name">
+								<input class="form-control mb-4" type="email" name="comment_email" placeholder="Email">
+								<textarea class="form-control mb-4" row="5" name="comment_text" placeholder="Add Your Commment"></textarea>
                                 
-								<button type="submit" class="main-btn">Submit</button>
+								<button type="submit" class="main-btn" name="create_comment">Submit</button>
 							</form>
 						</div>
 						<!-- /reply form -->
