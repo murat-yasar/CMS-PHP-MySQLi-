@@ -121,7 +121,7 @@
                   $comment_post_id = $comment['comment_post_id'];
                   $comment_author = $comment['comment_author'];
                   $comment_email = $comment['comment_email'];
-                  $comment_text = substr($comment['comment_text'], 0, 50);
+                  $comment_text = $comment['comment_text'];
                   $comment_date = date('d-m-Y', strtotime($comment['comment_date']));
                   $comment_status = $comment['comment_status'];
 
@@ -131,14 +131,24 @@
                           <td>{$comment_email}</td>
                           <td>{$comment_text}</td>
                           <td>{$comment_date}</td>
-                          <td>{$comment_status}</td>
-                          <td>
+                          <td>{$comment_status}</td>";
+
+                  $sql_query = "SELECT * FROM posts WHERE post_id = $comment_post_id";
+                  $posts = mysqli_query($conn, $sql_query);
+
+                  while($post = mysqli_fetch_assoc($posts)){
+                     $post_id = $post['post_id'];
+                     $post_title = $post['post_title'];
+                  }
+
+                  echo "   <td>{$post_title}</td>";
+                  echo "   <td>
                               <div class='dropdown'>
                                  <button id='dropdownMenuButton' class='btn btn-primary dropdown-toggle' type='button' data-toggle='dropdown' aria-expanded='false' aria-haspopup='true'>
                                     Actions
                                  </button>
                                  <div class='dropdown-menu'>
-                                    <a class='dropdown-item' href='#' data-toggle='modal' data-target='#view_modal'>View</a>
+                                    <a class='dropdown-item' href='#' data-toggle='modal' data-target='#view_modal$num'>View</a>
                                     <div class='dropdown-divider'></div>
                                     <a class='dropdown-item' href='#' data-toggle='modal' data-target='#approve_modal$num'>Approve</a>
                                     <div class='dropdown-divider'></div>
@@ -155,7 +165,7 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">View Post</h5>
+                      <h5 class="modal-title" id="exampleModalLabel">View Comment</h5>
                       <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -163,28 +173,32 @@
                     <div class="modal-body">
                       <form action="" method="post" enctype="multipart/form-data">
                         <div class="form-group">
-                          <label for="comment_author">Author</label>                     
-                          <input type="text" class="form-control" name="comment_author" value="<?php echo $comment_author; ?>">
+                          <label for="comment_author">Comment Author</label>                     
+                          <input readonly type="text" class="form-control" name="comment_author" value="<?php echo $comment_author; ?>">
                         </div>
                         <div class="form-group">
-                          <label for="comment_email">E-Mail</label>                     
-                          <input type="email" class="form-control" name="comment_email" value="<?php echo $comment_email; ?>">
+                          <label for="comment_email">Comment E-Mail</label>                     
+                          <input readonly type="email" class="form-control" name="comment_email" value="<?php echo $comment_email; ?>">
                         </div>
                         <div class="form-group">
-                          <label for="comment_text">Text</label>
-                          <textarea type="text" class="form-control" name="comment_text" cols="20" rows="5"><?php echo $post['comment_text']; ?></textarea>
+                          <label for="comment_text">Comment Text</label>
+                          <textarea readonly type="text" class="form-control" name="comment_text" cols="20" rows="5"><?php echo $comment_text; ?></textarea>
                         </div>
                         <div class="form-group">
-                          <label for="comment_status">Status</label>                     
-                          <input type="text" class="form-control" name="comment_status" value="<?php echo $comment_status; ?>">
+                           <label for="comment_status">Comment Status</label>
+                           <select class="form-control" name="comment_status">
+                              <option value='unapproved'>unapproved</option>
+                              <option value='approved'>approved</option>
+                           </select>
+                           <!-- <input type="text" class="form-control" name="comment_status" value="<?php // echo $comment_status; ?>"> -->
                         </div>
                         <div class="form-group">
-                          <label for="comment_response">Response</label>                     
-                          <input type="text" class="form-control" name="comment_response" value="<?php echo $comment_response; ?>">
+                          <label for="commented_post">Commented Post</label>                     
+                          <input readonly type="text" class="form-control" name="commented_post" value="<?php echo $post_title; ?>">
                         </div>
                         <div class="form-group">
                           <input type="hidden" name="comment_id" value="<?php echo $post['comment_id']; ?>">
-                          <input type="submit" class="btn btn-primary" name="view_modal" value="View Comment">
+                          <input type="submit" class="btn btn-primary" name="view_comment" value="Save">
                         </div>
                       </form>
                     </div>
@@ -256,15 +270,15 @@
           </div>
 
           <?php
-            // if(isset($_GET["delete"])){
-            //   $del_post_id = $_GET["delete"];
-            //   $sql_query = "DELETE FROM posts WHERE post_id = {$del_post_id} ";
-            //   $del_post = mysqli_query($conn, $sql_query);
+            if(isset($_GET["delete"])){
+              $del_comment_id = $_GET["delete"];
+              $sql_query = "DELETE FROM comments WHERE comment_id = {$del_comment_id} ";
+              $del_comment = mysqli_query($conn, $sql_query);
               
-            //   $_SESSION['message'] = "The Post has been successfully deleted!";
-            //   header("Location: posts.php");
-            //   exit();
-            // }
+              $_SESSION['message'] = "The Comment has been successfully deleted!";
+              header("Location: comments.php");
+              exit();
+            }
           ?>
 
         </div> <!-- /.container-fluid -->
