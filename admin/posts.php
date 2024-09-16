@@ -124,10 +124,13 @@
                   $post_title = $post['post_title'];
                   $post_author = $post['post_author'];
                   $post_date = date('d-m-Y', strtotime($post['post_date']));
-                  $post_comment_number = $post['post_comment_number'];
                   $post_img = $post['post_img'];
                   $post_text = substr($post['post_text'], 0, 50);
                   $post_tags = $post['post_tags'];
+
+                  $comments_query = "SELECT * FROM comments WHERE comment_post_id = {$post_id} AND comment_status = 'approved' ORDER BY comment_id DESC";
+                  $comments = mysqli_query($conn, $comments_query);
+                  $post_comments_count = mysqli_num_rows($comments);
 
                   echo "<tr>
                           <td>{$post_id}</td>
@@ -135,7 +138,7 @@
                           <td>{$post_category}</td>
                           <td>{$post_author}</td>
                           <td>{$post_date}</td>
-                          <td>{$post_comment_number}</td>
+                          <td>{$post_comments_count}</td>
                           <td><img src='../img/{$post_img}' width='80' height='80' /></td>
                           <td>{$post_text}</td>
                           <td>{$post_tags}</td>

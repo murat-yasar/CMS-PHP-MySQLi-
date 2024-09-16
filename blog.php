@@ -29,10 +29,14 @@
 								$post_title = ucfirst($post["post_title"]);   // ucfirst(); Capitilizes the first letters of each word
 								$post_author = $post["post_author"];
 								$post_date = $post["post_date"];
-								$post_comment_number = $post["post_comment_number"];
 								$post_img = $post["post_img"];
 								$post_text = substr($post["post_text"], 0, 100);   // substr($text, i, n); Takes the n number of characters starting from position i
 								$post_tags = $post["post_tags"];
+								$post_hits = $post["post_hits"];
+
+								$comments_query = "SELECT * FROM comments WHERE comment_post_id = {$post_id} AND comment_status = 'approved' ORDER BY comment_id DESC";
+								$comments = mysqli_query($conn, $comments_query);
+								$comments_count = mysqli_num_rows($comments);
 						?>
 
 						<!-- Blog-Post -->
@@ -45,7 +49,8 @@
 									<ul class="blog-meta">
 										<li><i class="fas fa-users"></i><span class="writer"><?php echo $post_author; ?></span></li>
 										<li><i class="fas fa-clock"></i><span class="writer"><?php echo $post_date; ?></span></li>
-										<li><i class="fas fa-comments"></i><span class="writer"><?php echo $post_comment_number; ?></span></li>
+										<li><i class="fas fa-comments"></i><span class="writer"><?php echo $comments_count; ?></span></li>
+										<li><i class="fas fa-eye"></i><span class="writer"><?php echo $post_hits; ?></span></li>
 									</ul>
 									<h3><?php echo $post_title; ?></h3>
 									<p><?php echo $post_text; ?></p>

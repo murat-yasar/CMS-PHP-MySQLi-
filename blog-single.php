@@ -22,6 +22,8 @@
 					<?php
 						if(isset($_GET['read'])){
 							$post_id = $_GET['read'];
+							$hit_query = "UPDATE posts SET post_hits = post_hits + 1 WHERE post_id = $post_id";
+							$hit_count = mysqli_query($conn, $hit_query);
 						}
 
 						$posts_query = "SELECT * FROM posts WHERE post_id = $post_id";
@@ -38,6 +40,7 @@
 							$post_img = $post["post_img"];
 							$post_text = $post["post_text"];
 							$post_tags = $post["post_tags"];
+							$post_hits = $post["post_hits"];
 					?>
 
 					<div class="blog">
@@ -49,6 +52,7 @@
 								<li><i class="fas fa-user"></i><?php echo $post_author; ?></li>
 								<li><i class="fas fa-clock"></i><?php echo $post_date; ?></li>
 								<li><i class="fas fa-comments"></i><?php echo $comments_count; ?></li>
+								<li><i class="fas fa-eye"></i><?php echo $post_hits; ?></li>
 							</ul>
 							<h3><?php echo $post_title; ?></h3>
 							<p><?php echo $post_text; ?></p>
