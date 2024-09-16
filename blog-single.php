@@ -24,14 +24,17 @@
 							$post_id = $_GET['read'];
 						}
 
-						$sql_query = "SELECT * FROM posts WHERE post_id = $post_id";
-						$posts = mysqli_query($conn, $sql_query);
+						$posts_query = "SELECT * FROM posts WHERE post_id = $post_id";
+						$posts = mysqli_query($conn, $posts_query);
+
+						$comments_query = "SELECT * FROM comments WHERE comment_post_id = {$post_id} AND comment_status = 'approved' ORDER BY comment_id DESC";
+						$comments = mysqli_query($conn, $comments_query);
+						$comments_count = mysqli_num_rows($comments);
 						
 						while($post = mysqli_fetch_assoc($posts)){
 							$post_title = $post["post_title"];
 							$post_author = $post["post_author"];
 							$post_date = $post["post_date"];
-							$post_comment_number = $post["post_comment_number"];
 							$post_img = $post["post_img"];
 							$post_text = $post["post_text"];
 							$post_tags = $post["post_tags"];
@@ -45,19 +48,21 @@
 							<ul class="blog-meta">
 								<li><i class="fas fa-user"></i><?php echo $post_author; ?></li>
 								<li><i class="fas fa-clock"></i><?php echo $post_date; ?></li>
-								<li><i class="fas fa-comments"></i><?php echo $post_comment_number; ?></li>
+								<li><i class="fas fa-comments"></i><?php echo $comments_count; ?></li>
 							</ul>
 							<h3><?php echo $post_title; ?></h3>
 							<p><?php echo $post_text; ?></p>
 						</div>
 
 						<!-- blog comments -->
-						<div class="blog-comments">
-							<h3>(<?php echo $post_comment_number; ?>) Comments</h3>
+						<div class="blog-comments">							
 
 							<?php 
-								$sql_query = "SELECT * FROM comments WHERE comment_post_id = {$post_id} AND comment_status = 'approved' ORDER BY comment_id DESC";
-								$comments = mysqli_query($conn, $sql_query);
+								$comments_query = "SELECT * FROM comments WHERE comment_post_id = {$post_id} AND comment_status = 'approved' ORDER BY comment_id DESC";
+								$comments = mysqli_query($conn, $comments_query);
+								// $comments_count = mysqli_num_rows($comments);
+
+								echo "<h3>({$comments_count}) Comments</h3>";
 
 								while($comment = mysqli_fetch_assoc($comments)){
 									$comment_author = $comment["comment_author"];
