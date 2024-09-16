@@ -150,9 +150,9 @@
                                  <div class='dropdown-menu'>
                                     <a class='dropdown-item' href='#' data-toggle='modal' data-target='#view_modal$num'>View</a>
                                     <div class='dropdown-divider'></div>
-                                    <a class='dropdown-item' href='#' data-toggle='modal' data-target='#approve_modal$num'>Approve</a>
+                                    <a class='dropdown-item' href='comments.php?approve={$comment_id}'>Approve</a>
                                     <div class='dropdown-divider'></div>
-                                    <a class='dropdown-item' href='#' data-toggle='modal' data-target='#unapprove_modal$num'>Unapprove</a>
+                                    <a class='dropdown-item' href='comments.php?unapprove={$comment_id}'>Unapprove</a>
                                     <div class='dropdown-divider'></div>
                                     <a class='dropdown-item' href='comments.php?delete={$comment_id}'>Delete</a>
                                  </div>
@@ -268,6 +268,28 @@
               </div>
             </div>
           </div>
+
+          <?php
+            if(isset($_GET["approve"])){
+              $approve_comment_id = $_GET["approve"];
+              $sql_query = "UPDATE comments SET comment_status = 'approved' WHERE comment_id = {$approve_comment_id}";
+              $approve_comment = mysqli_query($conn, $sql_query);
+              
+              $_SESSION['message'] = "The Comment has been successfully approved!";
+              header("Location: comments.php");
+              exit();
+            }
+
+            if(isset($_GET["unapprove"])){
+               $unapprove_comment_id = $_GET["unapprove"];
+               $sql_query = "UPDATE comments SET comment_status = 'unapproved' WHERE comment_id = {$unapprove_comment_id}";
+               $unapprove_comment = mysqli_query($conn, $sql_query);
+               
+               $_SESSION['message'] = "The Comment has been successfully unapproved!";
+               header("Location: comments.php");
+               exit();
+             }
+          ?>
 
           <?php
             if(isset($_GET["delete"])){

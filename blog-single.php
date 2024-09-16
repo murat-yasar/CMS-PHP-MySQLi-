@@ -55,14 +55,25 @@
 						<div class="blog-comments">
 							<h3>(<?php echo $post_comment_number; ?>) Comments</h3>
 
-							<!-- comment -->
-							<div class="media">
-								<div class="media-body">
-									<h4 class="media-heading">Joe Doe<span class="time">2 min ago</span></h4>
-									<p>Nec feugiat nisl pretium fusce id velit ut tortor pretium. Nisl purus in mollis nunc sed. Nunc non blandit massa enim nec.</p>
-								</div>
-							</div>
-							<!-- /comment -->
+							<?php 
+								$sql_query = "SELECT * FROM comments WHERE comment_post_id = {$post_id} AND comment_status = 'approved' ORDER BY comment_id DESC";
+								$comments = mysqli_query($conn, $sql_query);
+
+								while($comment = mysqli_fetch_assoc($comments)){
+									$comment_author = $comment["comment_author"];
+									$comment_text = $comment["comment_text"];
+									$comment_date = date('d-m-Y', strtotime($comment['comment_date']));
+
+									echo "
+										<div class='media'>
+											<div class='media-body'>
+												<h4 class='media-heading'>{$comment_author}<span class='time'>{$comment_date}</span></h4>
+												<p>{$comment_text}</p>
+											</div>
+										</div>
+									";
+								}
+							?>
 
 							<?php
 								if(isset($_POST['create_comment'])){
@@ -74,6 +85,10 @@
 
 									$sql_query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_text, comment_status,  comment_date) VALUES ($post_id, '{$comment_author}', '{$comment_email}', '{$comment_text}', 'unapproved', now())";
 									$comment_query = mysqli_query($conn, $sql_query);
+
+									$_SESSION['message'] = "Your comment has been successfully sent!";
+									header("Location: blog-single.php?read={$post_id}");
+									exit();
 								}
 							?>
 
