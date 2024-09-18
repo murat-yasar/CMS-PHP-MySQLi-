@@ -39,7 +39,7 @@
                 <th>Date</th>
                 <th>Status</th>
                 <th>Response</th>
-                <th>Add/Edit/Delete</th>
+                <th>Actions</th>
               </tr>
             </thead>
 

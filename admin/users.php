@@ -37,7 +37,7 @@
                 <th>Email</th>
                 <th>Password</th>
                 <th>Role</th>
-                <th>Add/Edit/Delete</th>
+                <th><a class='btn btn-large btn-light' href='#' data-toggle='modal' data-target='#add_modal'>Add User</a></th>
               </tr>
             </thead>
 
@@ -51,23 +51,13 @@
                   $user_role = mysqli_real_escape_string($conn, $_POST["user_role"]);
                   $user_password = mysqli_real_escape_string($conn, $_POST["user_password"]);
 
-                  if ($user_name == null || empty($user_name)) {
-                    echo "<div class='alert alert-danger' role='alert'>Please, type your username!</div>";
-                  } else if ($user_email == null || empty($user_email)) {
-                    echo "<div class='alert alert-danger' role='alert'>Please, type your email address!</div>";
-                  } else if ($user_role == null || empty($user_role)) {
-                    echo "<div class='alert alert-danger' role='alert'>Please, type your role!</div>";
-                  } else if ($user_password == null || empty($user_password)) {
-                    echo "<div class='alert alert-danger' role='alert'>Please, enter your password!</div>";
-                  } else {
-                      $sql_query = "INSERT INTO users (user_name, user_email, user_role, user_password) VALUES ('{$user_name}', '{$user_email}', '{$user_role}', '{$user_password}')";
+                  $sql_query = "INSERT INTO users (user_name, user_email, user_role, user_password) VALUES ('{$user_name}', '{$user_email}', '{$user_role}', '{$user_password}')";
 
-                      $add_user = mysqli_query($conn, $sql_query);
-              
-                      $_SESSION['message'] = "The user has been successfully added!";
-                      header("Location: users.php");
-                      exit();
-                  }
+                  $add_user = mysqli_query($conn, $sql_query);
+          
+                  $_SESSION['message'] = "The user has been successfully added!";
+                  header("Location: users.php");
+                  exit();
                 }
               ?>
 
@@ -113,8 +103,6 @@
                                 Actions
                               </button>
                               <div class='dropdown-menu'>
-                                <a class='dropdown-item' href='#' data-toggle='modal' data-target='#add_modal'>Add</a>
-                                <div class='dropdown-divider'></div>
                                 <a class='dropdown-item' href='#' data-toggle='modal' data-target='#edit_modal$num'>Edit</a>
                                 <div class='dropdown-divider'></div>
                                 <a class='dropdown-item' href='users.php?delete={$user_id}'>Delete</a>
@@ -137,30 +125,25 @@
                       <form action="" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                           <label for="user_name">User Name</label>                     
-                          <input type="text" class="form-control" name="user_name" value="<?php echo $user_name; ?>">
+                          <input type="text" class="form-control" name="user_name" value="<?php echo $user_name; ?>" required>
                         </div>
                         <div class="form-group">
                           <label for="user_email">User Email</label>                     
-                          <input type="text" class="form-control" name="user_email" value="<?php echo $user_email; ?>">
+                          <input type="email" class="form-control" name="user_email" value="<?php echo $user_email; ?>" required>
                         </div>
                         <div class="form-group">
                           <label for="user_password">User Password</label>                     
-                          <input type="text" class="form-control" name="user_password" value="<?php echo $user_password; ?>">
+                          <input type="password" class="form-control" name="user_password" value="<?php echo $user_password; ?>" required>
                         </div>
                         <div class="form-group">
                           <label for="user_role">User Role</label>                     
-                          <input type="text" class="form-control" name="user_role" value="<?php echo $user_role; ?>">
-                          <!-- <select class="form-control" name="user_role">
+                          <select class="form-control" name="user_role">
                             <?php
-                              // $sql_query = "SELECT * FROM categories";
-                              // $categories = mysqli_query($conn, $sql_query);
-
-                              // while($category = mysqli_fetch_assoc($categories)){
-                              //     $category_name = $category['category_name'];
-                              //     echo ($category_name == $post_category) ? "<option value='$category_name' selected>$category_name</option>" : "<option value='$category_name'>$category_name</option>";
-                              // }
+                              echo ($user_role == 'admin') ? 
+                                "<option value='admin' selected>Admin</option> <option value='member'>Member</option>" : 
+                                "<option value='admin'>Admin</option> <option value='member' selected>Member</option>";
                             ?>
-                           </select> -->
+                          </select>
                         </div>
                         <div class="form-group">
                           <input type="hidden" name="user_id" value="<?php echo $user['user_id']; ?>">
@@ -190,19 +173,22 @@
                   <form action="" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                       <label for="user_name">User Name</label>
-                      <input type="text" class="form-control" name="user_name">
+                      <input type="text" class="form-control" name="user_name" required>
                     </div>
                     <div class="form-group">
                       <label for="user_email">User Email</label>
-                      <input type="text" class="form-control" name="user_email">
-                    </div>
-                    <div class="form-group">
-                      <label for="user_role">User Role</label>
-                      <input type="text" class="form-control" name="user_role">
+                      <input type="email" class="form-control" name="user_email" required>
                     </div>
                     <div class="form-group">
                       <label for="user_password">User Password</label>
-                      <input type="text" class="form-control" name="user_password">
+                      <input type="password" class="form-control" name="user_password" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="user_role">User Role</label>
+                      <select>
+                        <option value='member' selected>Member</option>
+                        <option value='admin'>Admin</option>
+                      </select>
                     </div>
                     <div class="form-group">
                       <input type="submit" class="btn btn-primary" name="add_user" value="Add User">

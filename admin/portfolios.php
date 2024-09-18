@@ -37,7 +37,7 @@
                      <th>Portfolio Category</th>
                      <th>Image (SM)</th>
                      <th>Image (BG)</th>
-                     <th>Add/Edit/Delete</th>
+                     <th><a class='btn btn-large btn-light' href='#' data-toggle='modal' data-target='#add_modal'>Add Portfolio</a></th>
                   </tr>
                </thead>
 
@@ -133,8 +133,6 @@
                                           Actions
                                        </button>
                                        <div class='dropdown-menu'>
-                                       <a class='dropdown-item' href='#' data-toggle='modal' data-target='#add_modal'>Add</a>
-                                       <div class='dropdown-divider'></div>
                                        <a class='dropdown-item' href='#' data-toggle='modal' data-target='#edit_modal$model_num'>Edit</a>
                                        <div class='dropdown-divider'></div>
                                        <a class='dropdown-item' href='portfolios.php?delete={$portfolio_id}'>Delete</a>

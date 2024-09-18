@@ -34,7 +34,7 @@
               <tr>
                 <th>ID</th>
                 <th>Category Name</th>
-                <th>Add/Edit/Delete</th>
+                <th><a class='btn btn-large btn-light' href='#' data-toggle='modal' data-target='#add_modal'>Add Category</a></th>
               </tr>
             </thead>
 
@@ -87,8 +87,6 @@
                                 Actions
                               </button>
                               <div class='dropdown-menu'>
-                                <a class='dropdown-item' href='#' data-toggle='modal' data-target='#add_modal'>Add</a>
-                                <div class='dropdown-divider'></div>
                                 <a class='dropdown-item' href='#' data-toggle='modal' data-target='#edit_modal$model_num'>Edit</a>
                                 <div class='dropdown-divider'></div>
                                 <a class='dropdown-item' href='categories.php?delete={$category_id}'>Delete</a>
