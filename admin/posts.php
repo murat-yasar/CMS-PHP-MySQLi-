@@ -128,7 +128,7 @@
                   $post_text = substr($post['post_text'], 0, 50);
                   $post_tags = $post['post_tags'];
 
-                  $comments_query = "SELECT * FROM comments WHERE comment_post_id = {$post_id} AND comment_status = 'approved' ORDER BY comment_id DESC";
+                  $comments_query = "SELECT * FROM comments WHERE comment_post_id = {$post_id} AND comment_status = 'approved'";
                   $comments = mysqli_query($conn, $comments_query);
                   $post_comments_count = mysqli_num_rows($comments);
 
