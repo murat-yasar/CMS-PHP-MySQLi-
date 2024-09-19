@@ -133,7 +133,7 @@
                         </div>
                         <div class="form-group">
                           <label for="user_password">User Password</label>                     
-                          <input type="password" class="form-control" name="user_password" value="<?php echo $user_password; ?>" required>
+                          <input type="password" class="form-control" name="user_password" value="<?php echo $user_password; ?>">
                         </div>
                         <div class="form-group">
                           <label for="user_role">User Role</label>                     
@@ -185,7 +185,7 @@
                     </div>
                     <div class="form-group">
                       <label for="user_role">User Role</label>
-                      <select>
+                      <select name="user_role">
                         <option value='member' selected>Member</option>
                         <option value='admin'>Admin</option>
                       </select>
