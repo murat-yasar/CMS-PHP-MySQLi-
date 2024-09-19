@@ -58,9 +58,9 @@
                         $sql_query = "INSERT INTO portfolios (portfolio_name, portfolio_category, portfolio_img_sm, portfolio_img_bg)
                                        VALUES ('{$portfolio_name}', '{$portfolio_category}', '{$portfolio_img_sm}', '{$portfolio_img_bg}')";
 
-                        $edit_portfolio = mysqli_query($conn, $sql_query);
+                        $add_portfolio = mysqli_query($conn, $sql_query);
 
-                        $_SESSION['message'] = "The portfolio has been successfully added!";
+                        !$add_portfolio ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The portfolio has been successfully added!";
                         header("Location: portfolios.php");
                         exit();
                      }
@@ -100,7 +100,7 @@
 
                         $edit_portfolio = mysqli_query($conn, $edit_query);
                         
-                        $_SESSION['message'] = "The portfolio has been successfully edited!";
+                        !$edit_portfolio ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The portfolio has been successfully edited!";
                         header("Location: portfolios.php");
                         exit();
                      } 
@@ -176,7 +176,7 @@
                                     <input type="file" class="form-control" name="portfolio_image_sm" value="">
                                  </div>
                                  <div class="form-group">
-                                    <img width="100" src="../img/<?php echo $portfolio_img_sm; ?>">
+                                    <img width="100" src="../img/<?php echo $portfolio_image_bg; ?>">
                                     <input type="file" class="form-control" name="portfolio_image_bg" value="">
                                  </div>
                                  <div class="form-group">
@@ -246,7 +246,7 @@
               $sql_query = "DELETE FROM portfolios WHERE portfolio_id = {$del_portfolio_id} ";
               $del_portfolio = mysqli_query($conn, $sql_query);
               
-              $_SESSION['message'] = "The portfolio has been successfully deleted!";
+              !$del_portfolio ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The portfolio has been successfully deleted!";
               header("Location: portfolios.php");
               exit();
             }

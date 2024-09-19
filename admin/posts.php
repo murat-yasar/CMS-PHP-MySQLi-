@@ -53,7 +53,6 @@
                   $post_title = mysqli_real_escape_string($conn, $_POST["post_title"]);
                   $post_category = mysqli_real_escape_string($conn, $_POST["post_category"]);
                   $post_author = mysqli_real_escape_string($conn, $_POST["post_author"]);
-                  $post_comment_number = mysqli_real_escape_string($conn, $_POST["post_comment_number"]);
                   $post_text = mysqli_real_escape_string($conn, $_POST["post_text"]);
                   $post_tags = mysqli_real_escape_string($conn, $_POST["post_tags"]);
 
@@ -70,12 +69,12 @@
                   } else if ($post_text == null || empty($post_text)) {
                     echo "<div class='alert alert-danger' role='alert'>Please, enter the text of the post!</div>";
                   } else {
-                      $sql_query = "INSERT INTO posts (post_title, post_category, post_author, post_date, post_comment_number, post_text, post_tags, post_img) 
-                                    VALUES ('{$post_title}', '{$post_category}', '{$post_author}', now(), '{$post_comment_number}', '{$post_text}', '{$post_tags}', '{$post_img}')";
+                      $sql_query = "INSERT INTO posts (post_title, post_category, post_author, post_date, post_text, post_tags, post_img) 
+                                    VALUES ('{$post_title}', '{$post_category}', '{$post_author}', now(), '{$post_text}', '{$post_tags}', '{$post_img}')";
 
                       $add_post = mysqli_query($conn, $sql_query);
               
-                      $_SESSION['message'] = "The post has been successfully added!";
+                      !$add_post ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The post has been successfully added!";
                       header("Location: posts.php");
                       exit();
                   }
@@ -106,7 +105,7 @@
                   $edit_query = "UPDATE posts SET post_title = '$post_title', post_category = '$post_category', post_author = '$post_author', post_tags = '$post_tags', post_text = '$post_text', post_img = '$post_img' WHERE post_id = '$_POST[post_id]'";
                   $edit_post = mysqli_query($conn, $edit_query);
 
-                  $_SESSION['message'] = "The post has been successfully edited!";
+                  !$edit_post ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The post has been successfully edited!";
                   header("Location: posts.php");
                   exit();
                 }
@@ -231,7 +230,7 @@
                   <form action="" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                       <label for="post_title">Title</label>                     
-                      <input type="text" class="form-control" name="post_title">
+                      <input type="text" class="form-control" name="post_title" required>
                     </div>
                     <div class="form-group">
                       <label for="post_category">Category</label>                     
@@ -249,11 +248,7 @@
                     </div>
                     <div class="form-group">
                       <label for="post_author">Author</label>                     
-                      <input type="text" class="form-control" name="post_author">
-                    </div>
-                    <div class="form-group">
-                      <label for="post_comment_number">Comment Number</label>                     
-                      <input type="text" class="form-control" name="post_comment_number">
+                      <input type="text" class="form-control" name="post_author" required>
                     </div>
                     <div class="form-group">
                       <label for="post_img">Image URL</label>                     
@@ -265,7 +260,7 @@
                     </div>
                     <div class="form-group">
                       <label for="post_text">Text</label>                     
-                      <textarea type="text" class="form-control" name="post_text" cols="20" rows="5"></textarea>
+                      <textarea type="text" class="form-control" name="post_text" cols="20" rows="5" required></textarea>
                     </div>
                     <div class="form-group">
                       <input type="submit" class="btn btn-primary" name="add_post" value="Add Post">
@@ -282,7 +277,7 @@
               $sql_query = "DELETE FROM posts WHERE post_id = {$del_post_id} ";
               $del_post = mysqli_query($conn, $sql_query);
               
-              $_SESSION['message'] = "The Post has been successfully deleted!";
+              !$del_post ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The Post has been successfully deleted!";
               header("Location: posts.php");
               exit();
             }

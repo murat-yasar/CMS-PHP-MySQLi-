@@ -54,8 +54,9 @@
                   $sql_query = "INSERT INTO users (user_name, user_email, user_role, user_password) VALUES ('{$user_name}', '{$user_email}', '{$user_role}', '{$user_password}')";
 
                   $add_user = mysqli_query($conn, $sql_query);
+
+                  !$add_user ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The user has been successfully added!";
           
-                  $_SESSION['message'] = "The user has been successfully added!";
                   header("Location: users.php");
                   exit();
                 }
@@ -72,7 +73,7 @@
                   $edit_query = "UPDATE users SET user_name = '$user_name', user_email = '$user_email', user_role = '$user_role', user_password = '$user_password' WHERE user_id = '$_POST[user_id]'";
                   $edit_user = mysqli_query($conn, $edit_query);
 
-                  $_SESSION['message'] = "The user has been successfully edited!";
+                  !$edit_user ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The user has been successfully edited!";
                   header("Location: users.php");
                   exit();
                 }
@@ -139,9 +140,7 @@
                           <label for="user_role">User Role</label>                     
                           <select class="form-control" name="user_role">
                             <?php
-                              echo ($user_role == 'admin') ? 
-                                "<option value='admin' selected>Admin</option> <option value='member'>Member</option>" : 
-                                "<option value='admin'>Admin</option> <option value='member' selected>Member</option>";
+                              echo ($user_role == 'admin') ? "<option value='admin' selected>Admin</option> <option value='member'>Member</option>" : "<option value='admin'>Admin</option> <option value='member' selected>Member</option>";
                             ?>
                           </select>
                         </div>
@@ -205,7 +204,7 @@
               $sql_query = "DELETE FROM users WHERE user_id = {$del_user_id} ";
               $del_user = mysqli_query($conn, $sql_query);
               
-              $_SESSION['message'] = "The User has been successfully deleted!";
+              !$del_user ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The User has been successfully deleted!";
               header("Location: users.php");
               exit();
             }

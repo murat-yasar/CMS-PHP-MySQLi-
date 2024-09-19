@@ -49,7 +49,7 @@
                     $sql_query = "INSERT INTO categories(category_name) VALUE('$category_name') ";
                     $add_category = mysqli_query($conn, $sql_query);
 
-                    $_SESSION['message'] = "The category has been successfully added!";
+                    !$add_category ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The category has been successfully added!";
                     header("Location: categories.php");
                     exit();
                   }
@@ -58,11 +58,11 @@
 
               <?php
                 if(isset($_POST["edit_category"])){
-                  $edit_cat_title = $_POST["category_name_edit"];
-                  $sql_query_edit = "UPDATE categories SET category_name = '$edit_cat_title' WHERE category_id = '$_POST[category_id]'";
-                  $edit_category_query = mysqli_query($conn, $sql_query_edit);
+                  $edit_category_name = $_POST["category_name_edit"];
+                  $edit_query = "UPDATE categories SET category_name = '$edit_category_name' WHERE category_id = '$_POST[category_id]'";
+                  $edit_category = mysqli_query($conn, $edit_query);
 
-                  $_SESSION['message'] = "The category has been successfully edited!";
+                  !$edit_category ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The category has been successfully edited!";
                   header("Location: categories.php");
                   exit();
                 }
@@ -154,7 +154,7 @@
               $sql_query = "DELETE FROM categories WHERE category_id = {$del_category_id} ";
               $del_category = mysqli_query($conn, $sql_query);
               
-              $_SESSION['message'] = "The category has been successfully deleted!";
+              !$del_category ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The category has been successfully deleted!";
               header("Location: categories.php");
               exit();
             }

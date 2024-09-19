@@ -48,6 +48,7 @@
               <?php
                 $sql_query = "SELECT * FROM comments ORDER BY comment_id DESC";
                 $comments = mysqli_query($conn, $sql_query);
+                !$comments ? die("SQL Query Failed: " . mysqli_error($conn)) : null;
 
                 $num = 1;
 
@@ -70,6 +71,7 @@
 
                   $sql_query = "SELECT * FROM posts WHERE post_id = $comment_post_id";
                   $posts = mysqli_query($conn, $sql_query);
+                  !$comments ? die("SQL Query Failed: " . mysqli_error($conn)) : null;
 
                   while($post = mysqli_fetch_assoc($posts)){
                      $post_id = $post['post_id'];
@@ -152,7 +154,7 @@
               $approve_query = "UPDATE comments SET comment_status = 'approved' WHERE comment_id = {$approve_comment_id}";
               $approve_comment = mysqli_query($conn, $approve_query);
               
-              $_SESSION['message'] = "The Comment has been successfully approved!";
+              !$approve_comment ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The Comment has been successfully approved!";
               header("Location: comments.php");
               exit();
             }
@@ -162,7 +164,7 @@
                $sql_query = "UPDATE comments SET comment_status = 'unapproved' WHERE comment_id = {$unapprove_comment_id}";
                $unapprove_comment = mysqli_query($conn, $sql_query);
                
-               $_SESSION['message'] = "The Comment has been successfully unapproved!";
+               !$unapprove_comment ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The Comment has been successfully unapproved!";
                header("Location: comments.php");
                exit();
              }
@@ -174,7 +176,7 @@
               $sql_query = "DELETE FROM comments WHERE comment_id = {$del_comment_id} ";
               $del_comment = mysqli_query($conn, $sql_query);
               
-              $_SESSION['message'] = "The Comment has been successfully deleted!";
+              !$del_comment ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The Comment has been successfully deleted!";
               header("Location: comments.php");
               exit();
             }
