@@ -21,10 +21,21 @@
 
 					<div class="row">
 						<?php
-							$sql_query = "SELECT * FROM posts";
-							$posts = mysqli_query($conn, $sql_query);
+							// Pagination settings
+							isset($_GET["page"]) ? $page = $_GET["page"] : $page = 1;
+							$page == 1 ? $start_post = 0 : $start_post = ($page * 4) - 4;
+
+							$posts_query = "SELECT * FROM posts";
+							$posts = mysqli_query($conn, $posts_query);
+							$post_count = mysqli_num_rows($posts);
+							$page_count = ceil($post_count / 4); // 4 posts per page
+
+							$page_query = "SELECT * FROM posts ORDER BY post_id DESC LIMIT $start_post, 4";
+							$page_posts = mysqli_query($conn, $page_query);
+
+							// echo $post_count;
 							
-							while($post = mysqli_fetch_assoc($posts)){
+							while($post = mysqli_fetch_assoc($page_posts)){
 								$post_id = $post["post_id"];
 								$post_title = ucfirst($post["post_title"]);   // ucfirst(); Capitilizes the first letters of each word
 								$post_author = $post["post_author"];
@@ -69,14 +80,17 @@
 						<div class="col-md-6">
 							<nav aria-label="Page navigation example">
 								<ul class="pagination justify-content-center">
-									<li class="page-item disabled">
-										<a class="page-link" href="#" tabindex="-1">Previous</a>
-									</li>
-									<li class="page-item"><a class="page-link" href="#">1</a></li>
-									<li class="page-item"><a class="page-link" href="#">2</a></li>
-									<li class="page-item"><a class="page-link" href="#">3</a></li>
+									<!-- TODO: change background color for pagination -->
 									<li class="page-item">
-										<a class="page-link" href="#">Next</a>
+										<a class="page-link" href="blog.php?page=<?php echo ($page > 1) ? $page-1 : 1; ?>">Previous</a>
+									</li>
+									<?php
+										for ($i=1; $i<=$page_count; $i++){
+											echo "<li class='page-item'><a class='page-link' href='blog.php?page={$i}'>{$i}</a></li>";
+										}
+									?>
+									<li class="page-item">
+										<a class="page-link" href="blog.php?page=<?php echo ($page < $page_count) ? $page+1 : $page_count; ?>">Next</a>
 									</li>
 								</ul>
 							</nav>

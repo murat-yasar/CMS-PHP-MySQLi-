@@ -60,34 +60,25 @@
                   $post_img_tmp = $_FILES['post_img']['tmp_name'];
                   move_uploaded_file($post_img_tmp, "../img/$post_img");
 
-                  if ($post_title == null || empty($post_title)) {
-                    echo "<div class='alert alert-danger' role='alert'>Please, type a title for the post!</div>";
-                  } else if ($post_category == null || empty($post_category)) {
-                    echo "<div class='alert alert-danger' role='alert'>Please, type a category for the post!</div>";
-                  } else if ($post_author == null || empty($post_author)) {
-                    echo "<div class='alert alert-danger' role='alert'>Please, type the author name of the post!</div>";
-                  } else if ($post_text == null || empty($post_text)) {
-                    echo "<div class='alert alert-danger' role='alert'>Please, enter the text of the post!</div>";
-                  } else {
-                      $sql_query = "INSERT INTO posts (post_title, post_category, post_author, post_date, post_text, post_tags, post_img) 
-                                    VALUES ('{$post_title}', '{$post_category}', '{$post_author}', now(), '{$post_text}', '{$post_tags}', '{$post_img}')";
 
-                      $add_post = mysqli_query($conn, $sql_query);
-              
-                      !$add_post ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The post has been successfully added!";
-                      header("Location: posts.php");
-                      exit();
-                  }
+                  $sql_query = "INSERT INTO posts (post_title, post_category, post_author, post_date, post_text, post_tags, post_img) 
+                                VALUES ('{$post_title}', '{$post_category}', '{$post_author}', now(), '{$post_text}', '{$post_tags}', '{$post_img}')";
+
+                  $add_post = mysqli_query($conn, $sql_query);
+          
+                  !$add_post ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The post has been successfully added!";
+                  header("Location: posts.php");
+                  exit();
                 }
               ?>
 
               <?php
                 if(isset($_POST["edit_post"])){
-                  $post_title = $_POST['post_title'];
-                  $post_category = $_POST['post_category'];
-                  $post_author = $_POST['post_author'];
-                  $post_tags = $_POST['post_tags'];
-                  $post_text = $_POST['post_text'];
+                  $post_title = mysqli_real_escape_string($conn, $_POST['post_title']);
+                  $post_category = mysqli_real_escape_string($conn, $_POST['post_category']);
+                  $post_author = mysqli_real_escape_string($conn, $_POST['post_author']);
+                  $post_tags = mysqli_real_escape_string($conn, $_POST['post_tags']);
+                  $post_text = mysqli_real_escape_string($conn, $_POST['post_text']);
 
                   $post_img = $_FILES['post_img']['name'];
                   $post_img_tmp = $_FILES['post_img']['tmp_name'];
@@ -276,6 +267,8 @@
               $del_post_id = $_GET["delete"];
               $sql_query = "DELETE FROM posts WHERE post_id = {$del_post_id} ";
               $del_post = mysqli_query($conn, $sql_query);
+
+              // TODO: Add another script for the comments! If you delete a post, all the comments refering to that post, must be deleted, as well!
               
               !$del_post ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The Post has been successfully deleted!";
               header("Location: posts.php");

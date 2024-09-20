@@ -172,11 +172,15 @@
                                     </select>
                                  </div>
                                  <div class="form-group">
+                                    <label for="portfolio_image_sm">Small Image: </label><br>
                                     <img width="100" src="../img/<?php echo $portfolio_img_sm; ?>">
+                                    <span><?php echo $portfolio_img_sm; ?></span>
                                     <input type="file" class="form-control" name="portfolio_image_sm" value="">
                                  </div>
                                  <div class="form-group">
-                                    <img width="100" src="../img/<?php echo $portfolio_image_bg; ?>">
+                                    <label for="portfolio_image_bg">Big Image: </label><br>
+                                    <img width="100" src="../img/<?php echo $portfolio_img_bg; ?>">
+                                    <span><?php echo $portfolio_img_bg; ?></span>
                                     <input type="file" class="form-control" name="portfolio_image_bg" value="">
                                  </div>
                                  <div class="form-group">
