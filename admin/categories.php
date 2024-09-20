@@ -153,6 +153,8 @@
               $del_category_id = $_GET["delete"];
               $sql_query = "DELETE FROM categories WHERE category_id = {$del_category_id} ";
               $del_category = mysqli_query($conn, $sql_query);
+
+              // TODO: Add another script for the posts! If you delete a category, all the post refering to that category, must be deleted, as well!
               
               !$del_category ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The category has been successfully deleted!";
               header("Location: categories.php");
