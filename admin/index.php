@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,8 +18,15 @@
 
       <div id="content-wrapper">
         <div class="container-fluid">
+          <h1 class="text-center">Welcome to Admin Page (<small><?php echo $_SESSION['username'] . " - " . $_SESSION['role']; ?></small>)</h1>
+          <span></span>
+          <hr>
 
-
+          <?php
+            echo "<pre>";
+            var_dump($_SESSION); 
+            echo "</pre>";
+          ?>
 
         </div>
         <!-- /.container-fluid -->
