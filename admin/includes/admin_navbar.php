@@ -8,7 +8,7 @@
 
    <!-- Navbar Search -->
    <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-      <a href="logout.php" class="nav-link">
+      <a href="logout.php" class="nav-link btn-light">
          <span>Log out</span>
          <i class="fas fas-sign-out-alt"></i>
       </a>

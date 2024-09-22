@@ -23,7 +23,7 @@
       <div id="content-wrapper">
         <div class="container-fluid">
 
-          <h1>Welcome to Admin Page</h1>
+          <h1>Admin Page - Posts</h1>
           <hr>
 
           <?php if (isset($_SESSION['message'])): ?>
