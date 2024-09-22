@@ -1,40 +1,44 @@
-<!-- Header -->
-<?php include "includes/admin_header.php"; ?>
 <?php session_start(); ?>
-
-<?php
-   if(isset($_POST["login"])){
-      $inputName = mysqli_real_escape_string($conn, $_POST["username"]);
-      $inputPassword = mysqli_real_escape_string($conn, $_POST["password"]);
-
-      $user_query = "SELECT * FROM users WHERE user_name = '{$inputName}' AND user_password = '{$inputPassword}' LIMIT 1";
-      $users = mysqli_query($conn, $user_query);
-
-      !$users ? die("SQL Query Failed: " . mysqli_error($conn)) : null;
-
-      while($user = mysqli_fetch_assoc($users)){
-         $_SESSION['id'] = $user["user_id"];
-         $_SESSION['username'] = $user["user_name"];
-         $_SESSION['password'] = $user["user_password"];
-         $_SESSION['email'] = $user["user_email"];
-         $_SESSION['role'] = $user["user_role"];
-      }
-
-      if($inputName === $_SESSION['username'] && $inputPassword === $_SESSION['password']){
-         header("Location: index.php");
-         exit();
-      } else {
-         header("Location: login.php");
-         exit();
-      }
-      
-   }
-?>
 
 <!DOCTYPE html>
 <html lang="en">
+   <!-- Header -->
+   <?php include "includes/admin_header.php"; ?>
 
-<head>
+   <!-- include DB -->
+   <?php include "../includes/db.php"; ?>
+   
+   <?php            
+      if(isset($_POST["login"])){
+         $inputName = mysqli_real_escape_string($conn, $_POST["username"]);
+         $inputPassword = mysqli_real_escape_string($conn, $_POST["password"]);
+
+         $user_query = "SELECT * FROM users WHERE user_name = '{$inputName}' AND user_password = '{$inputPassword}' LIMIT 1";
+         $users = mysqli_query($conn, $user_query);
+
+         !$users ? die("SQL Query Failed: " . mysqli_error($conn)) : null;
+
+         while($user = mysqli_fetch_assoc($users)){
+            $_SESSION['id'] = $user["user_id"];
+            $_SESSION['username'] = $user["user_name"];
+            $_SESSION['password'] = $user["user_password"];
+            $_SESSION['email'] = $user["user_email"];
+            $_SESSION['role'] = $user["user_role"];
+         }
+
+         if($inputName === $_SESSION['username'] && $inputPassword === $_SESSION['password'] && $_SESSION['role'] === 'admin'){
+            header("Location: index.php");
+            exit();
+         } else if ($inputName === $_SESSION['username'] && $inputPassword === $_SESSION['password'] && $_SESSION['role'] === 'member'){
+            header("Location: ../index.php");
+            exit();
+         } else {
+            header("Location: login.php");
+            exit();
+         } 
+      }
+   ?>
+
    <body class="bg-dark">
       <div class="container">
          <div class="card card-login mx-auto mt-5">
@@ -59,8 +63,8 @@
          </div>
       </div>
 
-   <!-- Scripts -->
-   <?php include "includes/admin_scripts.php"; ?>
-</body>
+      <!-- Scripts -->
+      <?php include "includes/admin_scripts.php"; ?>
+   </body>
 
 </html>
