@@ -36,6 +36,7 @@
                     $query = "SELECT * FROM posts";
                     $items = mysqli_query($conn, $query);
                     $item_count = mysqli_num_rows($items);
+                    $_SESSION['post_count'] = $item_count;
                     
                     echo "<div class='mr-5'>{$item_count} Posts!</div>";
                   ?>
@@ -59,6 +60,7 @@
                     $query = "SELECT * FROM comments";
                     $items = mysqli_query($conn, $query);
                     $item_count = mysqli_num_rows($items);
+                    $_SESSION['comment_count'] = $item_count;
                     
                     echo "<div class='mr-5'>{$item_count} Comments!</div>";
                   ?>
@@ -82,6 +84,7 @@
                     $query = "SELECT * FROM categories";
                     $items = mysqli_query($conn, $query);
                     $item_count = mysqli_num_rows($items);
+                    $_SESSION['category_count'] = $item_count;
                     
                     echo "<div class='mr-5'>{$item_count} Categories!</div>";
                   ?>
@@ -105,6 +108,7 @@
                     $query = "SELECT * FROM portfolios";
                     $items = mysqli_query($conn, $query);
                     $item_count = mysqli_num_rows($items);
+                    $_SESSION['portfolio_count'] = $item_count;
                     
                     echo "<div class='mr-5'>{$item_count} Portfolios!</div>";
                   ?>
@@ -117,7 +121,74 @@
                 </a>
               </div>
             </div>
-            
+          </div>
+          <!-- /.row -->
+
+          <hr>
+
+          <div class="row">
+
+            <!-- Column Chart -->
+            <div class="col-md-6">
+              <script type="text/javascript">
+                google.charts.load('current', {'packages':['bar']});
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+                  var data = google.visualization.arrayToDataTable([
+                    ['Information', '', '', '', ''],
+                    ['Posts', <?php echo $_SESSION['post_count']; ?>, 0, 0, 0],
+                    ['Comments', 0, <?php echo $_SESSION['comment_count']; ?>, 0, 0],
+                    ['Categories', 0, 0, <?php echo $_SESSION['category_count']; ?>, 0],
+                    ['Portfolios', 0, 0, 0, <?php echo $_SESSION['portfolio_count']; ?>]
+                  ]);
+
+                  var options = {
+                    chart: {
+                      title: '',
+                      subtitle: '',
+                    }
+                  };
+
+                  var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+
+                  chart.draw(data, google.charts.Bar.convertOptions(options));
+                }
+              </script>
+              <div id="columnchart_material" style="width: auto; height: 400px;"></div>
+            </div>
+
+            <!-- Pie Chart -->
+            <?php
+              $query = "SELECT * FROM comments WHERE comment_status = 'approved'";
+              $items = mysqli_query($conn, $query);
+              $approve_count = mysqli_num_rows($items);
+            ?>
+
+            <div class="col-md-6">
+              <script type="text/javascript">
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(drawChart);
+
+                function drawChart() {
+
+                  var data = google.visualization.arrayToDataTable([
+                    ['Comments', 'Status'],
+                    ['Approved', <?php echo $approve_count; ?>],
+                    ['Unapproved', <?php echo $_SESSION['comment_count'] - $approve_count; ?>]
+                  ]);
+
+                  var options = {
+                    title: 'Comments'
+                  };
+
+                  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+                  chart.draw(data, options);
+                }
+              </script>
+              <div id="piechart" style="width: auto; height: 400px;"></div>
+            </div>
           </div>
 
         </div>
