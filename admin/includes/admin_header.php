@@ -2,12 +2,12 @@
 <?php include "../includes/db.php"; ?>
 
 <?php
-   if(isset($_SESSION['role'])){
-      if($_SESSION['role'] !== 'admin'){
-         header("location: ../index.php");
-         exit();
-      }
-   }
+   // if(isset($_SESSION['role'])){
+   //    if($_SESSION['role'] !== 'admin'){
+   //       header("location: ../index.php");
+   //       exit();
+   //    }
+   // }
 ?>
 
 <head>
