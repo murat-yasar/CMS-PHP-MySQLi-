@@ -1,12 +1,14 @@
+<?php session_start(); ?>
 
 <!DOCTYPE html>
 <html lang="en">
-   <?php session_start(); ?>
-   
    <!-- Header -->
    <?php include "includes/admin_header.php"; ?>
 
-   <?php
+   <!-- include DB -->
+   <?php include "../includes/db.php"; ?>
+   
+   <?php            
       if(isset($_POST["login"])){
          $inputName = mysqli_real_escape_string($conn, $_POST["username"]);
          $inputPassword = mysqli_real_escape_string($conn, $_POST["password"]);
@@ -24,19 +26,16 @@
             $_SESSION['role'] = $user["user_role"];
          }
 
-         if($inputName === $_SESSION['username'] && $inputPassword === $_SESSION['password']){
-            if($_SESSION['role'] === 'admin'){
-               header("Location: index.php");
-               exit();
-            } else {
-               header("Location: ../index.php");
-               exit();
-            }
+         if($inputName === $_SESSION['username'] && $inputPassword === $_SESSION['password'] && $_SESSION['role'] === 'admin'){
+            header("Location: index.php");
+            exit();
+         } else if ($inputName === $_SESSION['username'] && $inputPassword === $_SESSION['password'] && $_SESSION['role'] === 'member'){
+            header("Location: ../index.php");
+            exit();
          } else {
             header("Location: login.php");
             exit();
-         }
-         
+         } 
       }
    ?>
 
@@ -64,8 +63,8 @@
          </div>
       </div>
 
-   <!-- Scripts -->
-   <?php include "includes/admin_scripts.php"; ?>
-</body>
+      <!-- Scripts -->
+      <?php include "includes/admin_scripts.php"; ?>
+   </body>
 
 </html>

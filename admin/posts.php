@@ -3,6 +3,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
+  <!-- Check Admin Rights -->
+  <?php include "includes/admin_check.php"; ?>
+
   <!-- Header -->
   <?php include "includes/admin_header.php"; ?>
 
