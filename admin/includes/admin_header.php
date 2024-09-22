@@ -21,4 +21,7 @@
 
    <!-- Custom styles for this template-->
    <link href="css/sb-admin.css" rel="stylesheet">
+
+   <!-- Google Charts -->
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>

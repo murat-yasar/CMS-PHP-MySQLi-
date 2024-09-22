@@ -3,6 +3,46 @@
 <!-- Navigation -->
 <?php include "includes/navigation.php"; ?>
 
+<?php
+	if(isset($_GET['read'])){
+		$post_id = $_GET['read'];
+		$hit_query = "UPDATE posts SET post_hits = post_hits + 1 WHERE post_id = $post_id";
+		$hit_count = mysqli_query($conn, $hit_query);
+	}
+
+	$posts_query = "SELECT * FROM posts WHERE post_id = $post_id";
+	$posts = mysqli_query($conn, $posts_query);
+
+	$comments_query = "SELECT * FROM comments WHERE comment_post_id = {$post_id} AND comment_status = 'approved' ORDER BY comment_id DESC";
+	$comments = mysqli_query($conn, $comments_query);
+	$comments_count = mysqli_num_rows($comments);
+	
+	while($post = mysqli_fetch_assoc($posts)){
+		$post_title = $post["post_title"];
+		$post_author = $post["post_author"];
+		$post_date = $post["post_date"];
+		$post_img = $post["post_img"];
+		$post_text = $post["post_text"];
+		$post_tags = $post["post_tags"];
+		$post_hits = $post["post_hits"];
+?>
+
+<?php
+	if(isset($_POST['create_comment'])){
+		$comment_author = $_POST['comment_author'];
+		$comment_email = $_POST['comment_email'];
+		$comment_text = $_POST['comment_text'];
+
+		$post_id = $_GET['read'];
+
+		$sql_query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_text, comment_status,  comment_date) VALUES ($post_id, '{$comment_author}', '{$comment_email}', '{$comment_text}', 'unapproved', now())";
+		$comment_query = mysqli_query($conn, $sql_query);
+
+		$_SESSION['message'] = "Your comment has been successfully sent!";
+		header("Location: blog-single.php?read={$post_id}");
+		exit();
+	}
+?>
 
 	<!--==========================
     INSIDE HERO SECTION Section
@@ -18,31 +58,6 @@
 		<div class="container">
 			<div class="row">
 				<main id="main" class="col-md-8">
-
-					<?php
-						if(isset($_GET['read'])){
-							$post_id = $_GET['read'];
-							$hit_query = "UPDATE posts SET post_hits = post_hits + 1 WHERE post_id = $post_id";
-							$hit_count = mysqli_query($conn, $hit_query);
-						}
-
-						$posts_query = "SELECT * FROM posts WHERE post_id = $post_id";
-						$posts = mysqli_query($conn, $posts_query);
-
-						$comments_query = "SELECT * FROM comments WHERE comment_post_id = {$post_id} AND comment_status = 'approved' ORDER BY comment_id DESC";
-						$comments = mysqli_query($conn, $comments_query);
-						$comments_count = mysqli_num_rows($comments);
-						
-						while($post = mysqli_fetch_assoc($posts)){
-							$post_title = $post["post_title"];
-							$post_author = $post["post_author"];
-							$post_date = $post["post_date"];
-							$post_img = $post["post_img"];
-							$post_text = $post["post_text"];
-							$post_tags = $post["post_tags"];
-							$post_hits = $post["post_hits"];
-					?>
-
 					<div class="blog">
 						<div class="blog-img">
 							<img class="img-fluid" src="./img/<?php echo $post_img; ?>" alt="">
@@ -60,7 +75,6 @@
 
 						<!-- blog comments -->
 						<div class="blog-comments">							
-
 							<?php 
 								$comments_query = "SELECT * FROM comments WHERE comment_post_id = {$post_id} AND comment_status = 'approved' ORDER BY comment_id DESC";
 								$comments = mysqli_query($conn, $comments_query);
@@ -83,24 +97,6 @@
 									";
 								}
 							?>
-
-							<?php
-								if(isset($_POST['create_comment'])){
-									$comment_author = $_POST['comment_author'];
-									$comment_email = $_POST['comment_email'];
-									$comment_text = $_POST['comment_text'];
-
-									$post_id = $_GET['read'];
-
-									$sql_query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_text, comment_status,  comment_date) VALUES ($post_id, '{$comment_author}', '{$comment_email}', '{$comment_text}', 'unapproved', now())";
-									$comment_query = mysqli_query($conn, $sql_query);
-
-									$_SESSION['message'] = "Your comment has been successfully sent!";
-									header("Location: blog-single.php?read={$post_id}");
-									exit();
-								}
-							?>
-
 						</div>
 						<!-- /blog comments -->
 
