@@ -268,8 +268,21 @@
           <?php
             if(isset($_GET["delete"])){
               $del_post_id = $_GET["delete"];
-              $sql_query = "DELETE FROM posts WHERE post_id = {$del_post_id} ";
-              $del_post = mysqli_query($conn, $sql_query);
+
+              $del_file_query = "SELECT * FROM posts WHERE post_id = {$del_post_id} ";
+              $del_file = mysqli_query($conn, $del_file_query);
+              
+              if(!$del_file){ die('SQL query failed!: ' . mysqli_error($conn));}
+
+              while($img = mysqli_fetch_assoc($del_file)){
+                $post_img = $img['post_img'];
+                unlink("../img/$post_img");
+              }
+
+              $del_post_query = "DELETE FROM posts WHERE post_id = {$del_post_id} ";
+              $del_post = mysqli_query($conn, $del_post_query);
+              if(!$del_post){ die('SQL query failed!: ' . mysqli_error($conn));}
+
 
               // TODO: Add another script for the comments! If you delete a post, all the comments refering to that post, must be deleted, as well!
               
