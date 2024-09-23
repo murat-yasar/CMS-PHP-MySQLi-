@@ -274,6 +274,7 @@
               
               if(!$del_file){ die('SQL query failed!: ' . mysqli_error($conn));}
 
+              // Delete file for a deleted post
               while($img = mysqli_fetch_assoc($del_file)){
                 $post_img = $img['post_img'];
                 unlink("../img/$post_img");

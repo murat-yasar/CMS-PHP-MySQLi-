@@ -51,11 +51,11 @@
 
                            $portfolio_img_sm = $_FILES['portfolio_image_sm']['name'];
                            $portfolio_img_sm_tmp = $_FILES['portfolio_image_sm']['tmp_name'];
-                           move_uploaded_file($portfolio_img_sm_tmp, "../img/$portfolio_img_sm");
+                           move_uploaded_file($portfolio_img_sm_tmp, "../user/img/$portfolio_img_sm");
                            
                            $portfolio_img_bg = $_FILES['portfolio_image_bg']['name'];
                            $portfolio_img_bg_tmp = $_FILES['portfolio_image_bg']['tmp_name'];
-                           move_uploaded_file($portfolio_img_bg_tmp, "../img/$portfolio_img_bg");
+                           move_uploaded_file($portfolio_img_bg_tmp, "../user/img/$portfolio_img_bg");
 
                            $sql_query = "INSERT INTO portfolios (portfolio_name, portfolio_category, portfolio_img_sm, portfolio_img_bg)
                                           VALUES ('{$portfolio_name}', '{$portfolio_category}', '{$portfolio_img_sm}', '{$portfolio_img_bg}')";
@@ -95,8 +95,8 @@
                               }
                            }
 
-                           move_uploaded_file($portfolio_img_sm_tmp, "../img/$portfolio_img_sm");
-                           move_uploaded_file($portfolio_img_bg_tmp, "../img/$portfolio_img_bg");
+                           move_uploaded_file($portfolio_img_sm_tmp, "../user/img/$portfolio_img_sm");
+                           move_uploaded_file($portfolio_img_bg_tmp, "../user/img/$portfolio_img_bg");
 
                            $edit_query = "UPDATE portfolios SET portfolio_name = '{$portfolio_name}', portfolio_category = '{$portfolio_category}', portfolio_img_sm = '{$portfolio_img_sm}', portfolio_img_bg = '{$portfolio_img_bg}' WHERE portfolio_id = '{$portfolio_id}'";
 
@@ -127,8 +127,8 @@
                                     <td>{$portfolio_id}</td>
                                     <td>{$portfolio_name}</td>
                                     <td>{$portfolio_category}</td>
-                                    <td><img src='../img/{$portfolio_img_sm}' width='80' height='80' /></td>
-                                    <td><img src='../img/{$portfolio_img_bg}' width='80' height='80' /></td>
+                                    <td><img src='../user/img/{$portfolio_img_sm}' width='80' height='80' /></td>
+                                    <td><img src='../user/img/{$portfolio_img_bg}' width='80' height='80' /></td>
                                     <td>
                                        <div class='dropdown'>
                                           <button id='dropdownMenuButton' class='btn btn-primary dropdown-toggle' type='button' data-toggle='dropdown' aria-expanded='false' aria-haspopup='true'>
@@ -175,13 +175,13 @@
                                     </div>
                                     <div class="form-group">
                                        <label for="portfolio_image_sm">Small Image: </label><br>
-                                       <img width="100" src="../img/<?php echo $portfolio_img_sm; ?>">
+                                       <img width="100" src="../user/img/<?php echo $portfolio_img_sm; ?>">
                                        <span><?php echo $portfolio_img_sm; ?></span>
                                        <input type="file" class="form-control" name="portfolio_image_sm" value="">
                                     </div>
                                     <div class="form-group">
                                        <label for="portfolio_image_bg">Big Image: </label><br>
-                                       <img width="100" src="../img/<?php echo $portfolio_img_bg; ?>">
+                                       <img width="100" src="../user/img/<?php echo $portfolio_img_bg; ?>">
                                        <span><?php echo $portfolio_img_bg; ?></span>
                                        <input type="file" class="form-control" name="portfolio_image_bg" value="">
                                     </div>
@@ -249,6 +249,20 @@
                <?php
                if(isset($_GET["delete"])){
                $del_portfolio_id = $_GET["delete"];
+
+               $del_file_query = "SELECT * FROM portfolios WHERE portfolio_id = {$del_portfolio_id} ";
+               $del_file = mysqli_query($conn, $del_file_query);
+               
+               if(!$del_file){ die('SQL query failed!: ' . mysqli_error($conn));}
+
+               // Delete file for a deleted post
+               while($img = mysqli_fetch_assoc($del_file)){
+                  $portfolio_img_sm = $img['portfolio_img_sm'];
+                  unlink("../user/img/$portfolio_img_sm");
+                  $portfolio_img_bg = $img['portfolio_img_bg'];
+                  unlink("../user/img/$portfolio_img_bg");
+               }
+
                $sql_query = "DELETE FROM portfolios WHERE portfolio_id = {$del_portfolio_id} ";
                $del_portfolio = mysqli_query($conn, $sql_query);
                

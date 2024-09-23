@@ -1,5 +1,5 @@
 <?php ob_start(); ?>
-<?php include "../includes/db.php"; ?>
+<?php include "../user/includes/db.php"; ?>
 
 <head>
    <meta charset="utf-8">

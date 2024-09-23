@@ -6,7 +6,7 @@
    <?php include "includes/admin_header.php"; ?>
 
    <!-- include DB -->
-   <?php include "../includes/db.php"; ?>
+   <?php include "../user/includes/db.php"; ?>
    
    <?php            
       if(isset($_POST["login"])){
@@ -30,7 +30,7 @@
             header("Location: index.php");
             exit();
          } else if ($inputName === $_SESSION['username'] && $inputPassword === $_SESSION['password'] && $_SESSION['role'] === 'member'){
-            header("Location: ../index.php");
+            header("Location: ../user/index.php");
             exit();
          } else {
             header("Location: login.php");

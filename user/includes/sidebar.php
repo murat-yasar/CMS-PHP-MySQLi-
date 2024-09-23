@@ -2,15 +2,14 @@
          
    <div class="widget">
       <div class="widget-search">
-         <form action="search.php" method="post">
-            <input name="search_term" class="search-input form-control" type="text" placeholder="Search">
-            <button name="search_btn" type="submit"><i class="fas fa-search"></i></button>
+         <form method="post" action="search.php" class="form-inline" >
+            <input name="search_term" class="form-control " type="text" placeholder="Search">
+            <button name="search_btn" class="btn btn-warning" type="submit"><i class="fas fa-search"></i></button>
          </form>
       </div>
    </div>
    <!-- /Search -->
-         
-         
+
    <!-- Category -->
    <div class="widget">
       <h3 class="mb-3">Categories</h3>
@@ -30,7 +29,6 @@
                echo "<a href='category.php?category=$category_name'>{$category_name}<span>($category_number)</span></a>";
             }
          ?>
-
       </div>
    </div>
    <!-- /Category -->
@@ -39,6 +37,7 @@
    <div class="widget">
       <h3 class="mb-3">Latest Posts</h3>
 
+      <!-- TODO: Automatize latest posts! -->
       <!-- single post -->
       <div class="widget-post">
          <a href="#">

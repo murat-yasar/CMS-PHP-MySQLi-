@@ -68,6 +68,7 @@
 
 					</div>
 
+					<!-- TODO: automatize the pagination! -->
 					<div class="row">
 						<!-- Pagination -->
 						<div class="col-md-6">

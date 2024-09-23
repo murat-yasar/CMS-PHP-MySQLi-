@@ -26,7 +26,7 @@
 			</div>
 			<div class="row justify-content-center no-gutters mb-5 mb-lg-0">
 				<div class="col-md-6">
-					<img class="img-fluid" src="img/comany.jpg" alt="">
+					<img class="img-fluid" src="img/company.jpg" alt="">
 				</div>
 				<div class="col-md-6">
 					<div class="bg-main text-center h-100 project">
@@ -58,10 +58,12 @@
 					</div>
 				</div>
 			</div>
+
+			<!-- TODO: Fetch the employees from the DB -->
 			<div class="row">
 				<div class="col-md-4">
 					<div class="team-member">
-						<img class="mx-auto rounded-circle" src="img/1.jpg" alt="">
+						<img class="mx-auto rounded-circle" src="img/employee-1.jpg" alt="">
 						<h4>Kay Garland</h4>
 						<p class="text-muted">Lead Designer</p>
 						<ul class="list-inline social-buttons">
@@ -85,7 +87,7 @@
 				</div>
 				<div class="col-md-4">
 					<div class="team-member">
-						<img class="mx-auto rounded-circle" src="img/2.jpg" alt="">
+						<img class="mx-auto rounded-circle" src="img/employee-2.jpg" alt="">
 						<h4>Larry Parker</h4>
 						<p class="text-muted">Lead Marketer</p>
 						<ul class="list-inline social-buttons">
@@ -109,7 +111,7 @@
 				</div>
 				<div class="col-md-4">
 					<div class="team-member">
-						<img class="mx-auto rounded-circle" src="img/3.jpg" alt="">
+						<img class="mx-auto rounded-circle" src="img/employee-3.jpg" alt="">
 						<h4>Diana Pertersen</h4>
 						<p class="text-muted">Lead Developer</p>
 						<ul class="list-inline social-buttons">
