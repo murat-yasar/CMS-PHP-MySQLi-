@@ -270,5 +270,3 @@
       <?php include "includes/admin_scripts.php"; ?>
    </body>
 </html>
-
-<!-- echo "<div class='alert alert-success' role='alert'>The portfolio has been successfully deleted!</div>"; -->
