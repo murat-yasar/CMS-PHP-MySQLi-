@@ -8,7 +8,7 @@
     INSIDE HERO SECTION Section
 	============================-->
 	<section class="page-image page-image-blog md-padding">
-		<h1 class="text-white text-center">BLOG</h1>
+		<h1 class="text-white text-center">MY/BLOG</h1>
 	</section>
 
 	<!--==========================
