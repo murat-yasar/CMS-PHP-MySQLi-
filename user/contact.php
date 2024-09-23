@@ -25,6 +25,7 @@
 				</div>
 			</div>
 
+		<!-- TODO: functionalize Contact-form -->
 		<div class="row">
 			<div class="col-lg-12">
 				<form id="contactForm" name="sentMessage" novalidate="novalidate">

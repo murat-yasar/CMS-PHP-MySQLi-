@@ -38,7 +38,6 @@
 		$sql_query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_text, comment_status,  comment_date) VALUES ($post_id, '{$comment_author}', '{$comment_email}', '{$comment_text}', 'unapproved', now())";
 		$comment_query = mysqli_query($conn, $sql_query);
 
-		$_SESSION['message'] = "Your comment has been successfully sent!";
 		header("Location: blog-single.php?read={$post_id}");
 		exit();
 	}
