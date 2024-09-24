@@ -61,78 +61,45 @@
 
 			<!-- TODO: Fetch the employees from the DB -->
 			<div class="row">
-				<div class="col-md-4">
-					<div class="team-member">
-						<img class="mx-auto rounded-circle" src="img/employee-1.jpg" alt="">
-						<h4>Kay Garland</h4>
-						<p class="text-muted">Lead Designer</p>
-						<ul class="list-inline social-buttons">
-							<li class="list-inline-item">
-								<a href="#">
-									<i class="fab fa-twitter"></i>
-								</a>
-							</li>
-							<li class="list-inline-item">
-								<a href="#">
-									<i class="fab fa-facebook-f"></i>
-								</a>
-							</li>
-							<li class="list-inline-item">
-								<a href="#">
-									<i class="fab fa-linkedin-in"></i>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="team-member">
-						<img class="mx-auto rounded-circle" src="img/employee-2.jpg" alt="">
-						<h4>Larry Parker</h4>
-						<p class="text-muted">Lead Marketer</p>
-						<ul class="list-inline social-buttons">
-							<li class="list-inline-item">
-								<a href="#">
-									<i class="fab fa-twitter"></i>
-								</a>
-							</li>
-							<li class="list-inline-item">
-								<a href="#">
-									<i class="fab fa-facebook-f"></i>
-								</a>
-							</li>
-							<li class="list-inline-item">
-								<a href="#">
-									<i class="fab fa-linkedin-in"></i>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-md-4">
-					<div class="team-member">
-						<img class="mx-auto rounded-circle" src="img/employee-3.jpg" alt="">
-						<h4>Diana Pertersen</h4>
-						<p class="text-muted">Lead Developer</p>
-						<ul class="list-inline social-buttons">
-							<li class="list-inline-item">
-								<a href="#">
-									<i class="fab fa-twitter"></i>
-								</a>
-							</li>
-							<li class="list-inline-item">
-								<a href="#">
-									<i class="fab fa-facebook-f"></i>
-								</a>
-							</li>
-							<li class="list-inline-item">
-								<a href="#">
-									<i class="fab fa-linkedin-in"></i>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</div>
+				<?php
+					$sql = "SELECT * FROM employees";
+					$employees = mysqli_query($conn, $sql);
+					if(!$employees) die("SQL Query Failed: " . mysqli_error($conn));
+
+					while($employee = mysqli_fetch_assoc($employees)){
+						$employee_name = $employee['employee_name'];
+						$employee_title = $employee['employee_title'];
+						$employee_img = $employee['employee_img'];
+						$employee_x = $employee['employee_x'];
+						$employee_facebook = $employee['employee_facebook'];
+						$employee_linkedin = $employee['employee_linkedin'];
+
+						echo "<div class='col-md-4'>
+									<div class='team-member'>
+										<img class='mx-auto rounded-circle' src='img/{$employee_img}' alt=''>
+										<h4>$employee_name</h4>
+										<p class='text-muted'>$employee_title</p>
+										<ul class='list-inline social-buttons'>
+											<li class='list-inline-item'>
+												<a href='{$employee_x}'>
+													<i class='fab fa-twitter'></i>
+												</a>
+											</li>
+											<li class='list-inline-item'>
+												<a href='{$employee_facebook}'>
+													<i class='fab fa-facebook-f'></i>
+												</a>
+											</li>
+											<li class='list-inline-item'>
+												<a href='{$employee_linkedin}'>
+													<i class='fab fa-linkedin-in'></i>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>";
+					}
+				?>
 			</div>
 		</div>
 	</section>

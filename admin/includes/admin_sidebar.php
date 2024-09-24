@@ -31,4 +31,9 @@
       <i class="fas fa-users"></i>
       <span>Users</span></a>
    </li>
+   <li class="nav-item">
+      <a class="nav-link" href="employees.php">
+      <i class="fa fa-id-card"></i>
+      <span>Team</span></a>
+   </li>
 </ul>

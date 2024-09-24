@@ -61,7 +61,7 @@
 
                   $post_img = $_FILES['post_img']['name'];
                   $post_img_tmp = $_FILES['post_img']['tmp_name'];
-                  move_uploaded_file($post_img_tmp, "../img/$post_img");
+                  move_uploaded_file($post_img_tmp, "../user/img/$post_img");
 
 
                   $sql_query = "INSERT INTO posts (post_title, post_category, post_author, post_date, post_text, post_tags, post_img) 
@@ -94,12 +94,12 @@
                     }
                   }
 
-                  move_uploaded_file($post_img_tmp, "../img/$post_img");
+                  move_uploaded_file($post_img_tmp, "../user/img/$post_img");
 
                   $edit_query = "UPDATE posts SET post_title = '$post_title', post_category = '$post_category', post_author = '$post_author', post_tags = '$post_tags', post_text = '$post_text', post_img = '$post_img' WHERE post_id = '$_POST[post_id]'";
                   $edit_post = mysqli_query($conn, $edit_query);
+                  if (!$edit_post) die("SQL Query Failed: " . mysqli_error($conn));
 
-                  !$edit_post ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The post has been successfully edited!";
                   header("Location: posts.php");
                   exit();
                 }
@@ -132,7 +132,7 @@
                           <td>{$post_author}</td>
                           <td>{$post_date}</td>
                           <td>{$post_comments_count}</td>
-                          <td><img src='../img/{$post_img}' width='80' height='80' /></td>
+                          <td><img src='../user/img/{$post_img}' width='80' height='80' /></td>
                           <td>{$post_text}</td>
                           <td>{$post_tags}</td>
                           <td>
@@ -185,7 +185,7 @@
                         </div>
                         <div class="form-group">
                           <label for="post_img">Image URL</label>
-                          <img width="100" src="../img/<?php echo $post_img; ?>">
+                          <img width="100" src="../user/img/<?php echo $post_img; ?>">
                           <input type="file" class="form-control" name="post_img">
                         </div>
                         <div class="form-group">
@@ -277,15 +277,16 @@
               // Delete file for a deleted post
               while($img = mysqli_fetch_assoc($del_file)){
                 $post_img = $img['post_img'];
-                unlink("../img/$post_img");
+                unlink("../user/img/$post_img");
               }
 
-              $del_post_query = "DELETE FROM posts WHERE post_id = {$del_post_id} ";
+              $del_post_query = "DELETE FROM posts WHERE post_id = {$del_post_id} LIMIT 1";
               $del_post = mysqli_query($conn, $del_post_query);
               if(!$del_post){ die('SQL query failed!: ' . mysqli_error($conn));}
 
-
-              // TODO: Add another script for the comments! If you delete a post, all the comments refering to that post, must be deleted, as well!
+              $del_comment_query = "DELETE FROM comments WHERE comment_post_id = {$del_post_id}";
+              $del_comments = mysqli_query($conn, $del_comment_query);
+              if(!$del_comments){ die('SQL query failed!: ' . mysqli_error($conn));}
               
               !$del_post ? die("SQL Query Failed: " . mysqli_error($conn)) : $_SESSION['message'] = "The Post has been successfully deleted!";
               header("Location: posts.php");

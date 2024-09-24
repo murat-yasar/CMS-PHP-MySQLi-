@@ -67,7 +67,7 @@
 								<li><i class="fas fa-clock"></i><?php echo $post_date; ?></li>
 								<li><i class="fas fa-comments"></i><?php echo $comments_count; ?></li>
 								<li><i class="fas fa-eye"></i><?php echo $post_hits; ?></li>
-								<li><i class="fas fa-tag"></i><?php echo $post_tags; ?></li>
+								<li><i class="fas fa-tags"></i><?php echo $post_tags; ?></li>
 							</ul>
 							<h3><?php echo $post_title; ?></h3>
 							<p><?php echo $post_text; ?></p>
