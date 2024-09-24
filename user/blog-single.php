@@ -20,7 +20,7 @@
 	while($post = mysqli_fetch_assoc($posts)){
 		$post_title = $post["post_title"];
 		$post_author = $post["post_author"];
-		$post_date = $post["post_date"];
+		$post_date = date('d-m-Y', strtotime($post['post_date']));
 		$post_img = $post["post_img"];
 		$post_text = $post["post_text"];
 		$post_tags = $post["post_tags"];

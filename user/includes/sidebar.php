@@ -38,40 +38,27 @@
       <h3 class="mb-3">Latest Posts</h3>
 
       <!-- TODO: Automatize latest posts! -->
-      <!-- single post -->
-      <div class="widget-post">
-         <a href="#">
-            <img class="img-fluid" src="./img/post1.jpg" alt="">Lorem Ipsum
-         </a>
-         <ul class="blog-meta">
-            <li>Oct 18, 2017</li>
-         </ul>
-      </div>
-      <!-- /single post -->
+      <?php
+         $sql = "SELECT * FROM posts LIMIT 3";
+         $posts = mysqli_query($conn, $sql);
+         if (!$posts) die("SQL Query Failed: " . mysqli_error($conn));
 
-      <!-- single post -->
-      <div class="widget-post">
-         <a href="#">
-            <img src="./img/post2.jpg" alt="">Lorem Ipsum
-         </a>
-         <ul class="blog-meta">
-            <li>Oct 18, 2017</li>
-         </ul>
-      </div>
-      <!-- /single post -->
+         while($post = mysqli_fetch_assoc($posts)){
+            $post_id = $post['post_id'];
+            $post_img = $post['post_img'];
+            $post_title = $post['post_title'];
+            $post_date = date('d-m-Y', strtotime($post['post_date']));
 
-
-      <!-- single post -->
-      <div class="widget-post">
-         <a href="#">
-            <img src="./img/post3.jpg" alt="">Lorem Ipsum
-         </a>
-         <ul class="blog-meta">
-            <li>Oct 18, 2017</li>
-         </ul>
-      </div>
-      <!-- /single post -->
-
+            echo "<div class='widget-post'>
+                     <a href='../blog-single.php?read=$post_id'>
+                        <img class='img-fluid' src='./img/$post_img' alt=''> $post_title
+                     </a>
+                     <ul class='blog-meta'>
+                        <li>$post_date</li>
+                     </ul>
+                  </div>";
+         }
+      ?>
    </div>
    <!-- /Posts sidebar -->
 
