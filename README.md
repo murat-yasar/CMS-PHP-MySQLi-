@@ -35,9 +35,9 @@ Make sure you have the following installed:
 
 4. **Set up the database:**
 
-   - Open (phpMyAdmin)[http://localhost:8888/my-blog-cms].
+   - Open "phpMyAdmin"
    - Create a new database (e.g., myblog_cms).
-   - Import the myblog_cms.sql file from the project to set up the database structure.
+   - Import the cms-php.sql file from the project to set up the database structure.
 
 5. **Configure the database connection:**
 
@@ -47,7 +47,7 @@ Make sure you have the following installed:
       $dbHost = 'localhost';
       $dbUser = 'root';   // or your MySQL username
       $dbPass = '';       // or your MySQL password
-      $dbName = 'myblog_cms';
+      $dbName = 'cms-php';
    ```
 
 6. **Run the application:**
