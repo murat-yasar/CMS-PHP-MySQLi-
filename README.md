@@ -17,7 +17,7 @@ To run **My/Blog CMS** locally, follow these steps:
 ### Prerequisites
 Make sure you have the following installed:
 - **XAMPP** (or any local server like MAMP, WAMP, etc.)
-- **PHP** (version X.X.X or higher)
+- **PHP** (version 7.4 or higher)
 - **MySQL**
 
 ### Steps:
@@ -35,7 +35,7 @@ Make sure you have the following installed:
 
 4. **Set up the database:**
 
-   - Open (phpMyAdmin)[http://localhost/my-blog-cms].
+   - Open (phpMyAdmin)[http://localhost:8888/my-blog-cms].
    - Create a new database (e.g., myblog_cms).
    - Import the myblog_cms.sql file from the project to set up the database structure.
 
