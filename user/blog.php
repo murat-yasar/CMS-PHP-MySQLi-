@@ -39,7 +39,7 @@
 								$post_id = $post["post_id"];
 								$post_title = ucfirst($post["post_title"]);   // ucfirst(); Capitilizes the first letters of each word
 								$post_author = $post["post_author"];
-								$post_date = $post["post_date"];
+								$post_date = date('d-m-Y', strtotime($post['post_date']));
 								$post_img = $post["post_img"];
 								$post_text = substr($post["post_text"], 0, 100);   // substr($text, i, n); Takes the n number of characters starting from position i
 								$post_tags = $post["post_tags"];

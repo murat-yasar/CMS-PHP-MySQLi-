@@ -82,22 +82,20 @@
                      
                      echo "   <td>{$post_title}</td>";
                      echo "   <td>
-                     <div class='dropdown'>
-                     <button id='dropdownMenuButton' class='btn btn-primary dropdown-toggle' type='button' data-toggle='dropdown' aria-expanded='false' aria-haspopup='true'>
-                     Actions
-                     </button>
-                     <div class='dropdown-menu'>
-                     <a class='dropdown-item' href='#' data-toggle='modal' data-target='#view_modal$num'>View</a>
-                     <div class='dropdown-divider'></div>
-                     <a class='dropdown-item' href='comments.php?approve={$comment_id}'>Approve</a>
-                     <div class='dropdown-divider'></div>
-                     <a class='dropdown-item' href='comments.php?unapprove={$comment_id}'>Unapprove</a>
-                     <div class='dropdown-divider'></div>
-                     <a class='dropdown-item' href='comments.php?delete={$comment_id}'>Delete</a>
-                     </div>
-                     </div>
-                     </td>
-                     </tr>";
+                                <div class='dropdown'>
+                                  <button id='dropdownMenuButton' class='btn btn-primary dropdown-toggle' type='button' data-toggle='dropdown' aria-expanded='false' aria-haspopup='true'>Actions</button>
+                                  <div class='dropdown-menu'>
+                                    <a class='dropdown-item' href='#' data-toggle='modal' data-target='#view_modal$num'>View</a>
+                                    <div class='dropdown-divider'></div>
+                                    <a class='dropdown-item' href='comments.php?approve={$comment_id}'>Approve</a>
+                                    <div class='dropdown-divider'></div>
+                                    <a class='dropdown-item' href='comments.php?unapprove={$comment_id}'>Unapprove</a>
+                                    <div class='dropdown-divider'></div>
+                                    <a class='dropdown-item' href='comments.php?delete={$comment_id}'>Delete</a>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>";
                      }
               ?>
 
@@ -126,11 +124,7 @@
                         </div>
                         <div class="form-group">
                            <label for="comment_status">Comment Status</label>
-                           <select class="form-control" name="comment_status">
-                              <?php /* TODO: Add approve/unapprove functionality inside view modal */ ?>
-                              <option value='unapproved'>unapproved</option>
-                              <option value='approved'>approved</option>
-                           </select>
+                           <input type="text" class="form-control" name="comment_status" value="<?php if(isset($comment_status)) echo $comment_status; ?>">
                         </div>
                         <div class="form-group">
                           <label for="commented_post">Commented Post</label>                     
@@ -138,7 +132,7 @@
                         </div>
                         <div class="form-group">
                           <input type="hidden" name="comment_id" value="<?php echo $post['comment_id']; ?>">
-                          <input type="submit" class="btn btn-primary" name="view_comment" value="Save">
+                          <input type="submit" class="btn btn-primary" name="view_comment" value="Close">
                         </div>
                       </form>
                     </div>
